@@ -1,0 +1,13 @@
+﻿{
+  "ConnectionStrings": {
+    "GestionCatalogue": "Server=localhost;database=PFR;uid=postgres;Pwd=password;Port=5432"
+  },
+
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
