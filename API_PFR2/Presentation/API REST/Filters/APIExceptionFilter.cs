@@ -1,5 +1,4 @@
-﻿using API_PFR2.Domain.Entities;
-using API_PFR2.Domain.Exceptions;
+﻿using API_PFR2.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -8,11 +7,11 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace API_PFR2.Presentation.API_REST.Filters;
 
-public class APIExceptionFilter : ExceptionFilterAttribute
+public class APIExceptionFilterAttribute : ExceptionFilterAttribute
 {
     private readonly IDictionary<Type, Action<ExceptionContext>> _exceptionHandlers;
 
-    public ApiExceptionFilterAttribute()
+    public APIExceptionFilterAttribute()
     {
         // Register known exception types and handlers.
         _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>

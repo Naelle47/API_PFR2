@@ -12,7 +12,6 @@
     <Folder Include="BLL\Services\" />
     <Folder Include="DAL\Interfaces\" />
     <Folder Include="DAL\Implementations\" />
-    <Folder Include="Domain\Exceptions\" />
     <Folder Include="Presentation\API REST\DTO\Responses\" />
     <Folder Include="Presentation\API REST\DTO\Requests\" />
   </ItemGroup>

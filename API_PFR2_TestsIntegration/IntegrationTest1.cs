@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Logging;
-
 namespace API_PFR2_TestsIntegration.Tests
 {
     public class IntegrationTest1
