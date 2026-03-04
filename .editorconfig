@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CS1570: Le code XML du commentaire XML est incorrect
+dotnet_diagnostic.CS1570.severity = warning

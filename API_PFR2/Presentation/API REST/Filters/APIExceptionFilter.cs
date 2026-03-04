@@ -7,10 +7,27 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace API_PFR2.Presentation.API_REST.Filters;
 
+/// <summary>
+/// Provides a custom exception filter for ASP.NET Core API controllers that enables tailored error responses based on
+/// the type of exception encountered during action execution.
+/// </summary>
+/// <remarks>This attribute allows registration of specific exception handlers for known exception types, such as
+/// NotFoundEntityException, UnauthorizedAccessException, and others. It ensures that API clients receive appropriate
+/// HTTP status codes and detailed error information for common error scenarios, including invalid model states and
+/// unknown exceptions. The filter can be extended to handle additional exception types as needed, promoting consistent
+/// and informative error handling across the API.</remarks>
 public class APIExceptionFilterAttribute : ExceptionFilterAttribute
 {
     private readonly IDictionary<Type, Action<ExceptionContext>> _exceptionHandlers;
 
+    /// <summary>
+    /// Initializes a new instance of the APIExceptionFilterAttribute class, configuring handlers for known exception types
+    /// to enable custom error responses in API controllers.
+    /// </summary>
+    /// <remarks>This constructor sets up a mapping between exception types and their corresponding handling actions.
+    /// By default, it registers a handler for NotFoundEntityException, allowing the filter to generate appropriate API
+    /// responses when such exceptions are encountered. Additional exception handlers can be added to extend error handling
+    /// as needed.</remarks>
     public APIExceptionFilterAttribute()
     {
         // Register known exception types and handlers.
@@ -20,6 +37,13 @@ public class APIExceptionFilterAttribute : ExceptionFilterAttribute
         };
     }
 
+    /// <summary>
+    /// Handles exceptions that occur during the execution of an action method in an ASP.NET Core application.
+    /// </summary>
+    /// <remarks>This method enables custom exception handling logic to be executed before invoking the base
+    /// exception handling. Override this method to implement application-specific error handling or logging
+    /// strategies.</remarks>
+    /// <param name="context">The context for the exception, which provides information about the exception and the current HTTP request.</param>
     public override void OnException(ExceptionContext context)
     {
         HandleException(context);

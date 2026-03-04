@@ -9,6 +9,9 @@ using System.Runtime.CompilerServices;
 
 namespace API_PFR2.BLL;
 
+/// <summary>
+/// 
+/// </summary>
 public class BLLOptions
 {
     // Peut servir à configurer des options spécifiques pour la couche BLL.
@@ -16,8 +19,17 @@ public class BLLOptions
 
 }
 
+/// <summary>
+/// 
+/// </summary>
 public static class BLLExtensions
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configure"></param>
+    /// <returns></returns>
     public static IServiceCollection AddBLL(this IServiceCollection services, Action<BLLOptions>? configure = null)
     {
         BLLOptions options = new BLLOptions();

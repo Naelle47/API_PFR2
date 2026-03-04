@@ -3,8 +3,17 @@ using Npgsql;
 
 namespace API_PFR2.DAL;
 
+/// <summary>
+/// 
+/// </summary>
 public static class DALExtensions
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configuration"></param>
+    /// <returns></returns>
     public static IServiceCollection AddDAL(this IServiceCollection services, IConfiguration configuration)
     {
         // Récupération de la chaîne de connexion depuis appsettings.json
