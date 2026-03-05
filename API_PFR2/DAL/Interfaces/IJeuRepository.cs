@@ -4,28 +4,38 @@ namespace API_PFR2.DAL.Interfaces;
 
 
 /// <summary>
-/// Represents the contract for a repository that manages data access operations related to "Jeu" entities in the application.
-/// It's responsible for defining methods for retrieving, adding, updating, and deleting "Jeu" records from the underlying data source,
-/// Read only if necessary, and any other specific queries related to "Jeu" entities. This interface abstracts the data access layer, allowing for flexibility in implementation and promoting separation of concerns within the application architecture.
+/// Defines data access operations for <see cref="Jeu"/> entities.
 /// </summary>
 public interface IJeuRepository
 {
     /// <summary>
-    /// 
+    /// Retrieves all games from the data source.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>
+    /// A collection containing all available games.
+    /// </returns>
     IEnumerable<Jeu> GetAll();
+
     /// <summary>
-    /// 
+    /// Retrieves a specific game by its identifier.
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    /// <param name="id">
+    /// The unique identifier of the game.
+    /// </param>
+    /// <returns>
+    /// The corresponding <see cref="Jeu"/> if found; otherwise <c>null</c>.
+    /// </returns>
     Jeu? GetById(int id);
+
     /// <summary>
-    /// 
+    /// Determines whether a game with the specified identifier exists.
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    /// <param name="id">
+    /// The unique identifier of the game.
+    /// </param>
+    /// <returns>
+    /// <c>true</c> if the game exists; otherwise <c>false</c>.
+    /// </returns>
     bool Exists(int id);
 
 }

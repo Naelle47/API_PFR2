@@ -4,26 +4,24 @@
 // Les proprétés inclusent sont minimales pour identifier le jeu, son nom et une description.
 
 /// <summary>
-/// Represents a game that can be reserved or used in a tournament, providing essential properties to identify the game,
-/// its name, and a description.
+/// Represents a game available in the system.
+/// A game can be used for reservations or tournaments.
 /// </summary>
-/// <remarks>This class offers a minimal representation suitable for gaming applications or tournament management
-/// systems. It is intended for scenarios where only basic game identification and descriptive information are
-/// required.</remarks>
 public class Jeu
 {
     /// <summary>
-    /// Gets or sets the unique identifier for the entity.
+    /// Gets or sets the unique identifier of the game.
     /// </summary>
-    /// <remarks>This property is typically used to distinguish between different instances of the entity in a
-    /// collection or database.</remarks>
     public int id { get; set; }
+    
     /// <summary>
-    /// Gets or sets the name associated with the entity.
+    /// Gets or sets the name of the game.
     /// </summary>
     public required string nom { get; set; }
+
     /// <summary>
-    /// Gets or sets the description of the item.
+    /// Gets or sets the description of the game.
+    /// This value can be null if no description is provided.
     /// </summary>
     public string? description { get; set; }
 }
