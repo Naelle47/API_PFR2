@@ -60,20 +60,21 @@ public class JeuxController : APIBaseController
     [HttpGet("{id}")]
     public ActionResult<JeuResponse> GetById(int id)
     {
-        try
+        // Récupère le jeu directement
+        var jeu = _jeuService.GetJeuById(id);
+
+        // Vérifie s'il existe
+        if (jeu == null)
+            return NotFound($"Le jeu avec l'id {id} n'a pas été trouvé.");
+
+        // Crée la réponse
+        var response = new JeuResponse
         {
-            var jeu = _jeuService.GetJeuById(id);
-            var response = new JeuResponse
-            {
-                Id = jeu.id,
-                Nom = jeu.nom
-            };
-            return Ok(response);
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(ex.Message);
-        }
+            Id = jeu.id,
+            Nom = jeu.nom
+        };
+
+        return Ok(response);
     }
 
 }

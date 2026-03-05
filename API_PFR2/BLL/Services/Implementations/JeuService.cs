@@ -53,4 +53,13 @@ public class JeuService : IJeuService
 
         return _jeuRepository.GetById(id);
     }
+
+    /// <summary>
+    /// Checks if a game exists in the database by delegating to the repository.
+    /// </summary>
+    /// <param name="id">The identifier of the game to check.</param>
+    /// <returns>
+    /// <c>true</c> if the game exists; <c>false</c> otherwise.
+    /// </returns>
+    public bool Exists(int id) => _jeuRepository.Exists(id);
 }

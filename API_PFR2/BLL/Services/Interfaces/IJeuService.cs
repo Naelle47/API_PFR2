@@ -24,4 +24,13 @@ public interface IJeuService
     /// The corresponding <see cref="Jeu"/> if found; otherwise <c>null</c>.
     /// </returns>
     Jeu? GetJeuById(int id);
+
+    /// <summary>
+    /// Checks if a game exists in the database by its identifier.
+    /// </summary>
+    /// <param name="id">The identifier of the game to check.</param>
+    /// <returns>
+    /// <c>true</c> if the game exists; <c>false</c> otherwise.
+    /// </returns>
+    bool Exists(int id);
 }
