@@ -1,6 +1,6 @@
-﻿using PFR2_API.Domain.Enums;
+﻿using API_PFR2.Domain.Enums;
 
-namespace PFR2_API.Domain.Entities;
+namespace API_PFR2.Domain.Entities;
 
 // Classe de liaison entre les entités Utilisateur et Tournoi, représentant l'inscription d'un utilisateur à un tournoi
 // Elle représente l'inscription d'un utilisateur à un tournoi, avec des détails tels que l'utilisateur inscrit, le tournoi concerné, la date d'inscription, etc.

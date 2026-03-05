@@ -1,4 +1,4 @@
-﻿namespace PFR2_API.Domain.Entities;
+﻿namespace API_PFR2.Domain.Entities;
 
 // Classe représentant un tournoi organisé dans l'application, avec des détails tels que le nom, la date, les participants, etc.
 

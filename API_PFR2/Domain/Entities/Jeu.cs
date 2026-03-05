@@ -1,4 +1,4 @@
-﻿namespace PFR2_API.Domain.Entities;
+﻿namespace API_PFR2.Domain.Entities;
 
 // Classe représentant un jeu disponible à la réservation ou utilisé dans un tournoi.
 // Les proprétés inclusent sont minimales pour identifier le jeu, son nom et une description.

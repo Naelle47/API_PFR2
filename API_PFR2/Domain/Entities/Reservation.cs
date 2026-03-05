@@ -1,4 +1,4 @@
-﻿namespace PFR2_API.Domain.Entities;
+﻿namespace API_PFR2.Domain.Entities;
 
 // Classe représentant une réservation d’un jeu par un utilisateur sur une plage horaire.
 /// <summary>

@@ -1,6 +1,6 @@
-﻿using PFR2_API.Domain.Enums;
+﻿using API_PFR2.Domain.Enums;
 
-namespace PFR2_API.Domain.Entities;
+namespace API_PFR2.Domain.Entities;
 
 // Classe représentant un utilisateur de l'application (utilisateur/joueur ou administrateur).
 /// <summary>

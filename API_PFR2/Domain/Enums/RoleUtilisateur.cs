@@ -1,4 +1,4 @@
-﻿namespace PFR2_API.Domain.Enums;
+﻿namespace API_PFR2.Domain.Enums;
 
 // Enumération représentant les différents rôles
 // Les rôles sont : Utilsateur/Joueur et Administrateur. Ces rôles déterminent les permissions et les actions que chaque utilisateur peut effectuer au sein de l’application.

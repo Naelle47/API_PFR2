@@ -18,7 +18,7 @@ public static class DALExtensions
     {
         // Récupération de la chaîne de connexion depuis appsettings.json
         string connectionString = configuration.GetConnectionString("GestionCatalogue")
-            ;
+            ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 
         // Injection de la connexion Dapper / PostgreSQL

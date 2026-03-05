@@ -8,16 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="BLL\Services\Interfaces\" />
-    <Folder Include="BLL\Services\Implementations\" />
-    <Folder Include="BLL\Services\" />
-    <Folder Include="DAL\Interfaces\" />
-    <Folder Include="DAL\Implementations\" />
-    <Folder Include="Presentation\API REST\DTO\Responses\" />
-    <Folder Include="Presentation\API REST\DTO\Requests\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />

@@ -1,4 +1,4 @@
-﻿namespace PFR2_API.Domain.Enums;
+﻿namespace API_PFR2.Domain.Enums;
 
 // Enumération représentant les différents statuts possibles pour une inscription à un tournoi.
 // Les statuts peuvent inclure : "En attente", "Validée", "Annulée", etc. selon les règles de gestion de l'application.
