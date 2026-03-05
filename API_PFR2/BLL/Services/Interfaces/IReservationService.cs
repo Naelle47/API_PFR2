@@ -1,9 +1,8 @@
-﻿namespace API_PFR2.BLL.Services.Interfaces
+﻿namespace API_PFR2.BLL.Services.Interfaces;
+
+/// <summary>
+/// 
+/// </summary>
+public interface IReservationService
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IReservationService
-    {
-    }
 }
