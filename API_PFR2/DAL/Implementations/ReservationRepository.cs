@@ -6,7 +6,7 @@ namespace API_PFR2.DAL.Implementations;
 /// <summary>
 /// 
 /// </summary>
-public class ReservationRepository // : IReservationRepository
+public class ReservationRepository //: IReservationRepository
 {
     
 }

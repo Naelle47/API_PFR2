@@ -12,8 +12,13 @@ using System.Runtime.CompilerServices;
 namespace API_PFR2.BLL;
 
 /// <summary>
-/// 
+/// Represents configuration options for the Business Logic Layer.
 /// </summary>
+/// <remarks>
+/// This class can be used to configure specific behaviors or settings
+/// for services registered in the BLL. It currently serves as a placeholder
+/// for future configuration needs.
+/// </remarks>
 public class BLLOptions
 {
     // Peut servir à configurer des options spécifiques pour la couche BLL.
@@ -22,16 +27,27 @@ public class BLLOptions
 }
 
 /// <summary>
-/// 
+/// Provides extension methods for registering Business Logic Layer services
+/// in the dependency injection container.
 /// </summary>
+/// <remarks>
+/// This class centralizes the registration of application services
+/// that contain business logic.
+/// </remarks>
 public static class BLLExtensions
 {
     /// <summary>
-    /// 
+    /// Registers the Business Logic Layer services in the dependency injection container.
     /// </summary>
-    /// <param name="services"></param>
-    /// <param name="configure"></param>
-    /// <returns></returns>
+    /// <param name="services">
+    /// The service collection used to register application services.
+    /// </param>
+    /// <param name="configure">
+    /// Optional configuration action used to customize <see cref="BLLOptions"/>.
+    /// </param>
+    /// <returns>
+    /// The updated <see cref="IServiceCollection"/> with BLL services registered.
+    /// </returns>
     public static IServiceCollection AddBLL(this IServiceCollection services, Action<BLLOptions>? configure = null)
     {
         BLLOptions options = new BLLOptions();

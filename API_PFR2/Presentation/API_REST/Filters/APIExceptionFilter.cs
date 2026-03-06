@@ -34,6 +34,7 @@ public class APIExceptionFilterAttribute : ExceptionFilterAttribute
         _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
         {
             {typeof (NotFoundEntityException),  HandleNotFoundException},
+            { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException }
         };
     }
 
@@ -52,9 +53,9 @@ public class APIExceptionFilterAttribute : ExceptionFilterAttribute
     }
 
     /// <summary>
-    /// Handle the good exception for the context
+    /// Determines the appropriate handler for the current exception and executes it.
     /// </summary>
-    /// <param name="context">Context of exception</param>
+    /// <param name="context">The exception context containing details about the current request and exception.</param>
     private void HandleException(ExceptionContext context)
     {
         Type type = context.Exception.GetType();
@@ -76,9 +77,9 @@ public class APIExceptionFilterAttribute : ExceptionFilterAttribute
 
 
     /// <summary>
-    /// Handle Invalid Model State exception  400
+    /// Handles invalid model state errors and returns a 400 Bad Request response.
     /// </summary>
-    /// <param name="context">Context of exception</param>
+    /// <param name="context">The exception context associated with the current request.</param>
     private void HandleInvalidModelStateException(ExceptionContext context)
     {
         var details = new ValidationProblemDetails(context.ModelState)
@@ -92,9 +93,9 @@ public class APIExceptionFilterAttribute : ExceptionFilterAttribute
     }
 
     /// <summary>
-    /// Handle a not found ressource exception  //404
+    /// Handles <see cref="NotFoundEntityException"/> and returns a 404 Not Found response.
     /// </summary>
-    /// <param name="context">Context of exception</param>
+    /// <param name="context">The exception context associated with the current request.</param>
     private void HandleNotFoundException(ExceptionContext context)
     {
         var exception = context.Exception as NotFoundEntityException;
@@ -113,9 +114,9 @@ public class APIExceptionFilterAttribute : ExceptionFilterAttribute
     }
 
     /// <summary>
-    /// Handle for Unauthorized Access Exception //401
+    /// Handles unauthorized access exceptions and returns a 401 Unauthorized response.
     /// </summary>
-    /// <param name="context">Context of the exception</param>
+    /// <param name="context">The exception context associated with the current request.</param>
     private void HandleUnauthorizedAccessException(ExceptionContext context)
     {
         var details = new ProblemDetails
@@ -134,9 +135,9 @@ public class APIExceptionFilterAttribute : ExceptionFilterAttribute
     }
 
     /// <summary>
-    /// Handle a forbidden Access excception //403
+    /// Handles forbidden access exceptions and returns a 403 Forbidden response.
     /// </summary>
-    /// <param name="context">Context of the exception</param>
+    /// <param name="context">The exception context associated with the current request.</param>
     private void HandleForbiddenAccessException(ExceptionContext context)
     {
         var details = new ProblemDetails
@@ -156,9 +157,9 @@ public class APIExceptionFilterAttribute : ExceptionFilterAttribute
 
 
     /// <summary>
-    /// Handle for an Unknow Exception // 500
+    /// Handles unexpected exceptions and returns a 500 Internal Server Error response.
     /// </summary>
-    /// <param name="context">Context of the exception</param>
+    /// <param name="context">The exception context associated with the current request.</param>
     private void HandleUnknownException(ExceptionContext context)
     {
         var details = new ProblemDetails
