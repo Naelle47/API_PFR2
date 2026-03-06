@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using API_PFR2.BLL.Services.Implementations;
+using API_PFR2.BLL.Services.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 
 
@@ -36,11 +38,12 @@ public static class BLLExtensions
         configure?.Invoke(options); // Permet de configurer les options si une action de configuration est fournie.
 
         // Ci-dessous on enregistre les services de la couche BLL dans le conteneur de dépendances.
-        //services.AddScoped<IJeuService, JeuService>();
-        // Enregistre le service métier pour les jeux (IJeuService) avec son implémentation (JeuService) en tant que service à durée de vie Scoped.
+        services.AddScoped<IJeuService, JeuService>();
+        services.AddScoped<IReservationService, ReservationService>();
+        
 
         // services.AddScoped<ITournoiService, TournoiService>();
-        // services.AddScoped<IReservationService, ReservationService>();
+
         // services.AddScoped<IUtilisateurService, UtilisateurService>();
 
         return services;
