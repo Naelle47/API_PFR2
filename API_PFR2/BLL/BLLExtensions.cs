@@ -56,6 +56,7 @@ public static class BLLExtensions
         // Ci-dessous on enregistre les services de la couche BLL dans le conteneur de dépendances.
         services.AddScoped<IJeuService, JeuService>();
         services.AddScoped<IReservationService, ReservationService>();
+        services.AddTransient<IEmailService, EmailService>(); // Utilisation de AddTransient pour les services qui n'ont pas besoin d'être partagés.
         
 
         // services.AddScoped<ITournoiService, TournoiService>();

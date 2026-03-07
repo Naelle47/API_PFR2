@@ -42,6 +42,7 @@ public static class DALExtensions
 
         // Injection des repositories
         services.AddScoped<IJeuRepository, JeuRepository>();
+        services.AddScoped<IReservationRepository, ReservationRepository>();
         //services.AddScoped<IUtilisateurRepository, UtilisateurRepository>();
 
         return services;

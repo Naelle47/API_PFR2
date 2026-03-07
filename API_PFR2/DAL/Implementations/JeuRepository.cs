@@ -11,8 +11,7 @@ namespace API_PFR2.DAL.Implementations;
 /// </summary>
 /// <remarks>
 /// This repository implements <see cref="IJeuRepository"/> and uses Dapper
-/// to execute SQL queries against the database in order to retrieve
-/// information about games.
+/// to execute SQL queries against the database in order to retrieve information about games.
 /// </remarks>
 public class JeuRepository : IJeuRepository
 {
