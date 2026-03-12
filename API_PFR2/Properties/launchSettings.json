@@ -1,13 +1,26 @@
-﻿{
-  "ConnectionStrings": {
-    "GestionCatalogue": "Server=localhost;database=PFR;uid=postgres;Pwd=password;Port=5432"
+{
+  "profiles": {
+    "API_PFR2": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "environmentVariables": {
+        "ASPNETCORE_HTTP_PORTS": "8080"
+      },
+      "publishAllPorts": true,
+      "useSSL": false
+    }
   },
-
   "Logging": {
     "LogLevel": {
       "Default": "Information",
       "Microsoft.AspNetCore": "Warning"
     }
+  },
+  "ConnectionStrings": {
+    "GestionCatalogue": "Server=localhost;database=PFR;uid=postgres;Pwd=password;Port=5432"
   },
   "AllowedHosts": "*"
 }

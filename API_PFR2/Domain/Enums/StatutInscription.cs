@@ -23,4 +23,8 @@ public enum StatutInscription
     /// Represents an applicant whose registration has been refused.
     /// </summary>
     Refusee = 2, // L'inscription a été refusée, soit par l'administrateur, soit en raison de critères non remplis.
+    /// <summary>
+    /// Represents a registration that has been canceled, either by the participant or by the administrator, after validation.
+    /// </summary>
+    Annulee = 3 // L'inscription a été annulée, soit par le participant, soit par l'administrateur, après validation.
 }
