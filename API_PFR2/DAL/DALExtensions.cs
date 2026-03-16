@@ -33,8 +33,8 @@ public static class DALExtensions
     public static IServiceCollection AddDAL(this IServiceCollection services, IConfiguration configuration)
     {
         // Récupération de la chaîne de connexion depuis appsettings.json
-        string connectionString = configuration.GetConnectionString("GestionCatalogue")
-            ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+        string connectionString = configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 
         // Injection de la connexion Dapper / PostgreSQL
@@ -43,7 +43,7 @@ public static class DALExtensions
         // Injection des repositories
         services.AddScoped<IJeuRepository, JeuRepository>();
         services.AddScoped<IReservationRepository, ReservationRepository>();
-        //services.AddScoped<IUtilisateurRepository, UtilisateurRepository>();
+        services.AddScoped<IUtilisateurRepository, UtilisateurRepository>();
 
         return services;
     }

@@ -9,7 +9,7 @@ namespace API_PFR2.Presentation.API_REST.Controllers;
 /// Cette classe abstraite sert de base pour tous les contrôleurs d'API REST dans l'application.
 /// </summary>
 
-[Authorize(Roles = "User")]
+[Authorize(Roles = "Utilisateur")]
 [ApiController]
 [Route("api/[controller]")]
 public abstract class APIBaseController : ControllerBase

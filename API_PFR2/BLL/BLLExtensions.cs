@@ -54,9 +54,12 @@ public static class BLLExtensions
         configure?.Invoke(options); // Permet de configurer les options si une action de configuration est fournie.
 
         // Ci-dessous on enregistre les services de la couche BLL dans le conteneur de dépendances.
+        // Utilisation de AddScoped pour les services qui doivent être partagés au sein d'une même requête HTTP, mais pas entre différentes requêtes.
         services.AddScoped<IJeuService, JeuService>();
         services.AddScoped<IReservationService, ReservationService>();
-        services.AddTransient<IEmailService, EmailService>(); // Utilisation de AddTransient pour les services qui n'ont pas besoin d'être partagés.
+        services.AddScoped<IAuthService, AuthService>();
+        // Utilisation de AddTransient pour les services qui n'ont pas besoin d'être partagés.
+        services.AddTransient<IEmailService, EmailService>(); 
         
 
         // services.AddScoped<ITournoiService, TournoiService>();
