@@ -43,10 +43,10 @@ public class Reservation
     /// <summary>
     /// Gets or sets the user associated with the reservation.
     /// </summary>
-    public required Utilisateur utilisateur { get; set; }
+    public Utilisateur? utilisateur { get; set; }
 
     /// <summary>
     /// Gets or sets the game associated with the reservation.
     /// </summary>
-    public required Jeu jeu { get; set; }
+    public  Jeu? jeu { get; set; }
 }

@@ -1,7 +1,6 @@
 ﻿using API_PFR2.BLL.Services.Interfaces;
 using API_PFR2.DAL.Interfaces;
 using API_PFR2.Domain.Entities;
-
 namespace API_PFR2.BLL.Services.Implementations;
 
 /// <summary>
@@ -31,42 +30,39 @@ public class ReservationService : IReservationService
     }
 
     /// <inheritdoc/>
-    public int CreateReservation(Reservation reservation)
+    public async Task<int> CreateReservationAsync(Reservation reservation)
     {
-        bool exists = _reservationRepository
-            .ExistsForGameAtDate(reservation.jeuId, reservation.dateDebut);
-
+        bool exists = await _reservationRepository
+            .ExistsForGameAtDateAsync(reservation.jeuId, reservation.dateDebut);
         if (exists)
         {
-            throw new Exception("This game is already reserved for the selected date.");
+            throw new InvalidOperationException("This game is already reserved for the selected date.");
         }
-
-        return _reservationRepository.Add(reservation);
+        return await _reservationRepository.AddAsync(reservation);
     }
 
     /// <inheritdoc/>
-    public bool IsGameReserved(int jeuId, DateTime date)
+    public async Task<bool> IsGameReservedAsync(int jeuId, DateTime date)
     {
-        return _reservationRepository.ExistsForGameAtDate(jeuId, date);
+        return await _reservationRepository.ExistsForGameAtDateAsync(jeuId, date);
     }
 
     /// <inheritdoc/>
-    public IEnumerable<Reservation> GetReservationsByGameAndDate(int jeuId, DateTime date)
+    public async Task<IEnumerable<Reservation>> GetReservationsByGameAndDateAsync(int jeuId, DateTime date)
     {
-        return _reservationRepository.GetByGameAndDate(jeuId, date);
+        return await _reservationRepository.GetByGameAndDateAsync(jeuId, date);
     }
 
     /// <inheritdoc/>
-    public int CancelReservation(int jeuId, DateTime date)
+    public async Task<int> CancelReservationAsync(int jeuId, DateTime date)
     {
-        return _reservationRepository.DeleteByGameAndDate(jeuId, date);
+        return await _reservationRepository.DeleteByGameAndDateAsync(jeuId, date);
     }
 
     /// <inheritdoc/>
-    public void CancelReservationsForTournament(int jeuId, DateTime date)
+    public async Task CancelReservationsForTournamentAsync(int jeuId, DateTime date)
     {
-        var reservations = _reservationRepository.GetByGameAndDate(jeuId, date);
-
+        var reservations = await _reservationRepository.GetByGameAndDateAsync(jeuId, date);
         foreach (var reservation in reservations)
         {
             if (reservation.utilisateur != null)
@@ -78,7 +74,6 @@ public class ReservationService : IReservationService
                 );
             }
         }
-
-        _reservationRepository.DeleteByGameAndDate(jeuId, date);
+        await _reservationRepository.DeleteByGameAndDateAsync(jeuId, date);
     }
 }

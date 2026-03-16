@@ -1,5 +1,4 @@
 ﻿using API_PFR2.Domain.Entities;
-
 namespace API_PFR2.DAL.Interfaces;
 
 /// <summary>
@@ -15,8 +14,8 @@ public interface IReservationRepository
     /// Adds a new reservation to the data store.
     /// </summary>
     /// <param name="reservation">The reservation to add.</param>
-    /// <returns>The identifier of the created reservation.</returns>
-    int Add(Reservation reservation);
+    /// <returns>A task representing the asynchronous operation, containing the identifier of the created reservation.</returns>
+    Task<int> AddAsync(Reservation reservation);
 
     /// <summary>
     /// Determines whether a reservation already exists for a specific game at a given date.
@@ -24,23 +23,24 @@ public interface IReservationRepository
     /// <param name="jeuId">The identifier of the game.</param>
     /// <param name="date">The date to check for an existing reservation.</param>
     /// <returns>
-    /// <c>true</c> if a reservation exists for the specified game at the given date; otherwise, <c>false</c>.
+    /// A task representing the asynchronous operation, containing <c>true</c> if a reservation
+    /// exists for the specified game at the given date; otherwise, <c>false</c>.
     /// </returns>
-    bool ExistsForGameAtDate(int jeuId, DateTime date);
+    Task<bool> ExistsForGameAtDateAsync(int jeuId, DateTime date);
 
     /// <summary>
     /// Retrieves all reservations for a specific game at a given date.
     /// </summary>
     /// <param name="jeuId">The identifier of the game.</param>
     /// <param name="date">The date used to filter reservations.</param>
-    /// <returns>A collection of reservations matching the criteria.</returns>
-    IEnumerable<Reservation> GetByGameAndDate(int jeuId, DateTime date);
+    /// <returns>A task representing the asynchronous operation, containing a collection of matching reservations.</returns>
+    Task<IEnumerable<Reservation>> GetByGameAndDateAsync(int jeuId, DateTime date);
 
     /// <summary>
     /// Deletes reservations associated with a specific game at a given date.
     /// </summary>
     /// <param name="jeuId">The identifier of the game.</param>
     /// <param name="date">The date used to identify reservations to delete.</param>
-    /// <returns>The number of reservations deleted.</returns>
-    int DeleteByGameAndDate(int jeuId, DateTime date);
+    /// <returns>A task representing the asynchronous operation, containing the number of reservations deleted.</returns>
+    Task<int> DeleteByGameAndDateAsync(int jeuId, DateTime date);
 }

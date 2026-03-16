@@ -11,7 +11,7 @@ namespace API_PFR2.DAL.Implementations;
 /// This repository implements <see cref="IUtilisateurRepository"/> and uses Dapper
 /// to execute SQL queries against the database.
 /// </remarks>
-public class UtilisateurRepository
+public class UtilisateurRepository : IUtilisateurRepository
 {
     private readonly IDbConnection _dbConnection;
     /// <summary>

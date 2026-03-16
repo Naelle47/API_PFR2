@@ -1,5 +1,4 @@
 ﻿using API_PFR2.Domain.Entities;
-
 namespace API_PFR2.BLL.Services.Interfaces;
 
 /// <summary>
@@ -16,11 +15,11 @@ public interface IReservationService
     /// Creates a new reservation for a game.
     /// </summary>
     /// <param name="reservation">The reservation to create.</param>
-    /// <returns>The identifier of the newly created reservation.</returns>
-    /// <exception cref="Exception">
+    /// <returns>A task representing the asynchronous operation, containing the identifier of the newly created reservation.</returns>
+    /// <exception cref="InvalidOperationException">
     /// Thrown when the game is already reserved for the specified time.
     /// </exception>
-    int CreateReservation(Reservation reservation);
+    Task<int> CreateReservationAsync(Reservation reservation);
 
     /// <summary>
     /// Determines whether a game is already reserved at a specific date.
@@ -28,10 +27,10 @@ public interface IReservationService
     /// <param name="jeuId">The identifier of the game.</param>
     /// <param name="date">The date to check.</param>
     /// <returns>
-    /// <c>true</c> if a reservation exists for the specified game and date;
-    /// otherwise, <c>false</c>.
+    /// A task representing the asynchronous operation, containing <c>true</c> if a reservation
+    /// exists for the specified game and date; otherwise, <c>false</c>.
     /// </returns>
-    bool IsGameReserved(int jeuId, DateTime date);
+    Task<bool> IsGameReservedAsync(int jeuId, DateTime date);
 
     /// <summary>
     /// Retrieves reservations for a specific game at a given date.
@@ -39,17 +38,18 @@ public interface IReservationService
     /// <param name="jeuId">The identifier of the game.</param>
     /// <param name="date">The date used to filter reservations.</param>
     /// <returns>
-    /// A collection of reservations matching the specified game and date.
+    /// A task representing the asynchronous operation, containing a collection of reservations
+    /// matching the specified game and date.
     /// </returns>
-    IEnumerable<Reservation> GetReservationsByGameAndDate(int jeuId, DateTime date);
+    Task<IEnumerable<Reservation>> GetReservationsByGameAndDateAsync(int jeuId, DateTime date);
 
     /// <summary>
     /// Cancels reservations for a specific game at a given date.
     /// </summary>
     /// <param name="jeuId">The identifier of the game.</param>
     /// <param name="date">The date of the reservations to cancel.</param>
-    /// <returns>The number of reservations that were cancelled.</returns>
-    int CancelReservation(int jeuId, DateTime date);
+    /// <returns>A task representing the asynchronous operation, containing the number of reservations cancelled.</returns>
+    Task<int> CancelReservationAsync(int jeuId, DateTime date);
 
     /// <summary>
     /// Cancels reservations that conflict with a tournament schedule.
@@ -61,5 +61,6 @@ public interface IReservationService
     /// </remarks>
     /// <param name="jeuId">The identifier of the game used in the tournament.</param>
     /// <param name="date">The tournament date.</param>
-    void CancelReservationsForTournament(int jeuId, DateTime date);
+    /// <returns>A task representing the asynchronous operation.</returns>
+    Task CancelReservationsForTournamentAsync(int jeuId, DateTime date);
 }

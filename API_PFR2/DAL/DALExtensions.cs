@@ -44,6 +44,7 @@ public static class DALExtensions
         services.AddScoped<IJeuRepository, JeuRepository>();
         services.AddScoped<IReservationRepository, ReservationRepository>();
         services.AddScoped<IUtilisateurRepository, UtilisateurRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }
