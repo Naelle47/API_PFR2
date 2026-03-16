@@ -1,7 +1,8 @@
 {
   "profiles": {
     "API_PFR2": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:5000"
     },
     "Container (Dockerfile)": {
       "commandName": "Docker",
@@ -18,9 +19,6 @@
       "Default": "Information",
       "Microsoft.AspNetCore": "Warning"
     }
-  },
-  "ConnectionStrings": {
-    "GestionCatalogue": "Server=localhost;database=PFR;uid=postgres;Pwd=password;Port=5432"
   },
   "AllowedHosts": "*"
 }
