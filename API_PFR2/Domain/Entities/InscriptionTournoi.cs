@@ -12,7 +12,7 @@ namespace API_PFR2.Domain.Entities;
 /// <remarks>This class serves as a link between the user and tournament entities, capturing the state and details
 /// of a user's registration. The registration status is defined by the StatutInscription enumeration, which includes
 /// values such as 'EnAttente', 'Validee', and 'Refusee'.</remarks>
-public class InscriptionTournoi 
+public class InscriptionTournoi
 {
     /// <summary>
     /// Gets or sets the unique identifier for the entity.
