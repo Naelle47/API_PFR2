@@ -1,9 +1,6 @@
-﻿using API_PFR2.Domain.Entities;
-using Microsoft.AspNetCore.Mvc;
-using API_PFR2.BLL.Services.Interfaces; 
+﻿using Microsoft.AspNetCore.Mvc;
+using API_PFR2.BLL.Services.Interfaces;
 using API_PFR2.Presentation.API_REST.DTO.Responses;
-
-
 namespace API_PFR2.Presentation.API_REST.Controllers;
 
 /// <summary>
@@ -11,9 +8,8 @@ namespace API_PFR2.Presentation.API_REST.Controllers;
 /// </summary>
 /// <remarks>
 /// This controller exposes REST API endpoints allowing clients to retrieve
-/// information about available <see cref="Jeu"/> entities.
+/// information about available <see cref="API_PFR2.Domain.Entities.Jeu"/> entities.
 /// </remarks>
-
 [ApiController]
 [Route("api/[controller]")]
 public class JeuxController : APIBaseController
@@ -32,49 +28,40 @@ public class JeuxController : APIBaseController
     /// <summary>
     /// Retrieves the complete catalogue of games.
     /// </summary>
-    /// <returns>
-    /// A collection of <see cref="JeuResponse"/> representing the available games.
-    /// </returns>
+    /// <returns>A collection of <see cref="JeuResponse"/> representing the available games.</returns>
     /// <response code="200">Returns the list of games.</response>
     [HttpGet]
-    public ActionResult<IEnumerable<JeuResponse>> GetAllJeux()
+    public async Task<ActionResult<IEnumerable<JeuResponse>>> GetAllJeux()
     {
-        var jeux = _jeuService.GetCatalogue()
-        .Select(j => new JeuResponse
+        var jeux = await _jeuService.GetCatalogueAsync();
+        var response = jeux.Select(j => new JeuResponse
         {
             Id = j.id,
             Nom = j.nom
         }).ToList();
-        return Ok(jeux);
+        return Ok(response);
     }
 
     /// <summary>
     /// Retrieves a specific game by its identifier.
     /// </summary>
     /// <param name="id">The unique identifier of the game.</param>
-    /// <returns>
-    /// A <see cref="JeuResponse"/> representing the requested game.
-    /// </returns>
+    /// <returns>A <see cref="JeuResponse"/> representing the requested game.</returns>
     /// <response code="200">Returns the requested game.</response>
     /// <response code="404">If the game does not exist.</response>
     [HttpGet("{id}")]
-    public ActionResult<JeuResponse> GetById(int id)
+    public async Task<ActionResult<JeuResponse>> GetById(int id)
     {
-        // Récupère le jeu directement
-        var jeu = _jeuService.GetJeuById(id);
+        var jeu = await _jeuService.GetJeuByIdAsync(id);
 
-        // Vérifie s'il existe
         if (jeu == null)
-            return NotFound($"Le jeu avec l'id {id} n'a pas été trouvé.");
+            return NotFound($"Game with id {id} was not found.");
 
-        // Crée la réponse
         var response = new JeuResponse
         {
             Id = jeu.id,
             Nom = jeu.nom
         };
-
         return Ok(response);
     }
-
 }
