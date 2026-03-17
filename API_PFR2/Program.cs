@@ -1,10 +1,12 @@
 using System.Text;
 using API_PFR2.BLL;
 using API_PFR2.DAL;
+using API_PFR2.Domain.Enums;
 using API_PFR2.Presentation.API_REST.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using API_PFR2.DAL.Implementations;
 using API_PFR2.DAL.Interfaces;
+using API_PFR2.Domain.Enums;
 using Npgsql;
 
 namespace API_PFR2.DAL;
@@ -9,10 +10,6 @@ namespace API_PFR2.DAL;
 /// Provides extension methods for registering Data Access Layer services
 /// in the dependency injection container.
 /// </summary>
-/// <remarks>
-/// This class centralizes the configuration of repositories and database
-/// connections used by the application.
-/// </remarks>
 public static class DALExtensions
 {
     /// <summary>
@@ -32,15 +29,30 @@ public static class DALExtensions
     /// </exception>
     public static IServiceCollection AddDAL(this IServiceCollection services, IConfiguration configuration)
     {
-        // Récupération de la chaîne de connexion depuis appsettings.json
+        // Retrieve the connection string from configuration
         string connectionString = configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
+        // -------------------------------
+        // Create NpgsqlDataSource and map enums
+        // -------------------------------
+        var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
 
-        // Injection de la connexion Dapper / PostgreSQL
-        services.AddScoped<IDbConnection>(_ => new NpgsqlConnection(connectionString));
+        // Map PostgreSQL enums to C# enums
+        dataSourceBuilder.MapEnum<RoleUtilisateur>("role_utilisateur");
+        dataSourceBuilder.MapEnum<StatutInscription>("statut_inscription");
 
-        // Injection des repositories
+        var dataSource = dataSourceBuilder.Build();
+
+        // Inject the DataSource as singleton
+        services.AddSingleton(dataSource);
+
+        // Inject IDbConnection scoped per request
+        services.AddScoped<IDbConnection>(sp => dataSource.CreateConnection());
+
+        // -------------------------------
+        // Register repositories
+        // -------------------------------
         services.AddScoped<IJeuRepository, JeuRepository>();
         services.AddScoped<IReservationRepository, ReservationRepository>();
         services.AddScoped<IUtilisateurRepository, UtilisateurRepository>();
@@ -48,5 +60,4 @@ public static class DALExtensions
 
         return services;
     }
-
 }
