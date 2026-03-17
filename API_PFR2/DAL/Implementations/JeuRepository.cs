@@ -33,7 +33,7 @@ public class JeuRepository : IJeuRepository
     public async Task<IEnumerable<Jeu>> GetAllAsync()
     {
         string sql = @"SELECT id, nom, description 
-                       FROM jeu";
+                       FROM api_games";
         return await _dbConnection.QueryAsync<Jeu>(sql);
     }
 
@@ -47,7 +47,7 @@ public class JeuRepository : IJeuRepository
     public async Task<Jeu?> GetByIdAsync(int id)
     {
         string sql = @"SELECT id, nom, description 
-                       FROM jeu
+                       FROM api_games
                        WHERE id = @Id";
         return await _dbConnection.QueryFirstOrDefaultAsync<Jeu>(sql, new { Id = id });
     }
@@ -62,7 +62,7 @@ public class JeuRepository : IJeuRepository
     public async Task<bool> ExistsAsync(int id)
     {
         string sql = @"SELECT COUNT(1)
-                       FROM jeu
+                       FROM api_game
                        WHERE id = @Id";
         int count = await _dbConnection.ExecuteScalarAsync<int>(sql, new { Id = id });
         return count > 0;

@@ -7,6 +7,12 @@ public class APIWebApplicationFactory : WebApplicationFactory<Program>
 {
     public IConfiguration? Configuration { get; set; }
 
+    public APIWebApplicationFactory() : base()
+    { 
+        // Seed the test database
+
+    }
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         base.ConfigureWebHost(builder);
@@ -18,5 +24,10 @@ public class APIWebApplicationFactory : WebApplicationFactory<Program>
                 .Build();
             config.AddConfiguration(Configuration);
         });
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        // Cleanup the test database
     }
 }
