@@ -30,6 +30,11 @@ public class APIWebApplicationFactory : WebApplicationFactory<Program>
                 .Build();
             config.AddConfiguration(Configuration);
         });
+
+        // Force la connection string pour les tests
+        builder.UseSetting(
+            "ConnectionStrings:DefaultConnection",
+            "Host=localhost;Database=api_pfr2_test;Username=postgres;Password=password;Port=5432");
     }
 
     protected override void Dispose(bool disposing)
