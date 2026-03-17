@@ -25,26 +25,16 @@ public class APIWebApplicationFactory : WebApplicationFactory<Program>
     {
         base.ConfigureWebHost(builder);
 
-        builder.ConfigureAppConfiguration((context, config) =>
+        //appsettings.integration.json
+        builder.ConfigureAppConfiguration(config =>
         {
             Configuration = new ConfigurationBuilder()
-                .AddJsonFile(
-                    Path.Combine(Directory.GetCurrentDirectory(), "appsettings.Integration.json"))
+                .AddJsonFile("appsettings.Integrations.json")
                 .Build();
             config.AddConfiguration(Configuration);
+
         });
 
-        builder.ConfigureServices(services =>
-        {
-            // Remove existing IDbConnection registration
-            var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IDbConnection));
-            if (descriptor != null) services.Remove(descriptor);
-
-            // Register test DB connection
-            services.AddScoped<IDbConnection>(_ =>
-                new NpgsqlConnection(
-                    "Host=localhost;Database=api_pfr2_test;Username=postgres;Password=password;Port=5432"));
-        });
     }
 
     protected override void Dispose(bool disposing)
