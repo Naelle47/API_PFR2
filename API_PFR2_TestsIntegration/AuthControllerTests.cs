@@ -1,15 +1,13 @@
 ﻿using System.Net.Http.Json;
 using API_PFR2.Presentation.API_REST.DTO.Requests;
 using API_PFR2.Presentation.API_REST.DTO.Responses;
+using API_PFR2_TestsIntegration.Fixtures;
 namespace API_PFR2_TestsIntegration;
 
-public class AuthControllerTests : IClassFixture<CustomWebApplicationFactory>
+public class AuthControllerTests : AbstractIntegrationTest
 {
-    private readonly HttpClient _client;
-
-    public AuthControllerTests(CustomWebApplicationFactory factory)
+    public AuthControllerTests(APIWebApplicationFactory fixture) : base(fixture)
     {
-        _client = factory.CreateClient();
     }
 
     [Fact]
@@ -31,7 +29,7 @@ public class AuthControllerTests : IClassFixture<CustomWebApplicationFactory>
         Assert.NotNull(result);
         Assert.NotEmpty(result.Token);
     }
-     
+
     [Fact]
     public async Task Login_ShouldReturn401_WhenCredentialsAreInvalid()
     {
