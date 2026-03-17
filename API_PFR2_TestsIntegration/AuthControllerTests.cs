@@ -2,10 +2,16 @@
 using API_PFR2.Presentation.API_REST.DTO.Requests;
 using API_PFR2.Presentation.API_REST.DTO.Responses;
 using API_PFR2_TestsIntegration.Fixtures;
+
 namespace API_PFR2_TestsIntegration;
 
 public class AuthControllerTests : AbstractIntegrationTest
 {
+    // Note : Although this class inherits from AbstractIntegrationTest,
+    // the LogIn method is not called here since we are testing the authentication
+    // endpoint itself. LogIn will be used in other controller tests that require
+    // an authenticated user (e.g. ReservationControllerTests, JeuxControllerTests).
+
     public AuthControllerTests(APIWebApplicationFactory fixture) : base(fixture)
     {
     }
