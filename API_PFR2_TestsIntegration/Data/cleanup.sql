@@ -1,11 +1,4 @@
--- Cleanup test data
-DELETE FROM inscriptiontournoi;
-DELETE FROM reservation;
-DELETE FROM tournoi;
-DELETE FROM api_games;
-DELETE FROM api_users;
-
--- Drop tables
+-- Drop tables in reverse order of creation to avoid FK issues
 DROP TABLE IF EXISTS inscriptiontournoi;
 DROP TABLE IF EXISTS reservation;
 DROP TABLE IF EXISTS tournoi;

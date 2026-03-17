@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
+
 namespace API_PFR2_TestsIntegration.Fixtures;
 
 public class APIWebApplicationFactory : WebApplicationFactory<Program>
@@ -10,7 +11,7 @@ public class APIWebApplicationFactory : WebApplicationFactory<Program>
     public IConfiguration? Configuration { get; set; }
 
     public APIWebApplicationFactory() : base()
-    { 
+    {
         // Seed the test database
         using var connection = new NpgsqlConnection(
             "Host=localhost;Database=api_pfr2_test;Username=postgres;Password=password;Port=5432");
@@ -35,11 +36,11 @@ public class APIWebApplicationFactory : WebApplicationFactory<Program>
 
         builder.ConfigureServices(services =>
         {
-            // Supprimer l'enregistrement existant de IDbConnection
+            // Remove existing IDbConnection registration
             var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IDbConnection));
             if (descriptor != null) services.Remove(descriptor);
 
-            // Enregistrer la connexion vers la base de test
+            // Register test DB connection
             services.AddScoped<IDbConnection>(_ =>
                 new NpgsqlConnection(
                     "Host=localhost;Database=api_pfr2_test;Username=postgres;Password=password;Port=5432"));
