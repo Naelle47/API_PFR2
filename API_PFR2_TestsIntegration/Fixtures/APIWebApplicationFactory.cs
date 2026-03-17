@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System.Data;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
@@ -22,7 +23,8 @@ public class APIWebApplicationFactory : WebApplicationFactory<Program>
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         base.ConfigureWebHost(builder);
-        builder.ConfigureAppConfiguration(config =>
+
+        builder.ConfigureAppConfiguration((context, config) =>
         {
             Configuration = new ConfigurationBuilder()
                 .AddJsonFile(
@@ -31,10 +33,17 @@ public class APIWebApplicationFactory : WebApplicationFactory<Program>
             config.AddConfiguration(Configuration);
         });
 
-        // Force la connection string pour les tests
-        builder.UseSetting(
-            "ConnectionStrings:DefaultConnection",
-            "Host=localhost;Database=api_pfr2_test;Username=postgres;Password=password;Port=5432");
+        builder.ConfigureServices(services =>
+        {
+            // Supprimer l'enregistrement existant de IDbConnection
+            var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IDbConnection));
+            if (descriptor != null) services.Remove(descriptor);
+
+            // Enregistrer la connexion vers la base de test
+            services.AddScoped<IDbConnection>(_ =>
+                new NpgsqlConnection(
+                    "Host=localhost;Database=api_pfr2_test;Username=postgres;Password=password;Port=5432"));
+        });
     }
 
     protected override void Dispose(bool disposing)
