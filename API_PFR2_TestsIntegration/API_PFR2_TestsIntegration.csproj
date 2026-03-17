@@ -21,6 +21,12 @@
     <ProjectReference Include="..\API_PFR2\API_PFR2.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<Content Include="appsettings.Integration.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
   <ItemGroup>
     <Using Include="System.Net" />
     <Using Include="Microsoft.Extensions.DependencyInjection" />

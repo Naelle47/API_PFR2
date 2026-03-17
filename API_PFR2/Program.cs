@@ -131,4 +131,4 @@ app.Run();
 // ------------------------------
 // Integration Tests entry point
 // ------------------------------
-// public partial class Program { }
+ public partial class Program { }
