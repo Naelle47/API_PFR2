@@ -39,3 +39,4 @@ jobs:
       run: dotnet test --no-build --verbosity normal
       env:
         ASPNETCORE_ENVIRONMENT: Integration
+        ConnectionStrings__DefaultConnection: "Host=localhost;Database=api_pfr2_test;Username=postgres;Password=password;Port=5432"
