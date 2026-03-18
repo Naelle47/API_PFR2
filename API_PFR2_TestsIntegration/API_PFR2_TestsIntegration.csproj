@@ -22,7 +22,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<Content Include="appsettings.Integration.json">
+		<Content Include="appsettings.Integrations.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Data\seed.sql">

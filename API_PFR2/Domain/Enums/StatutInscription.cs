@@ -14,17 +14,13 @@ public enum StatutInscription
     /// <summary>
     /// Represents the state in which an operation or entity is pending and has not yet been processed or finalized.
     /// </summary>
-    EnAttente = 0, // L'inscription est en attente de confirmation ou de validation. Sera la valeur par défaut lors de la création d'une nouvelle inscription.
+    EnAttente = 0, 
     /// <summary>
     /// Indicates that the entity is in a valid state.
     /// </summary>
-    Validee = 1, // L'inscription a été validée et confirmée pour le tournoi.
+    Validee = 1, 
     /// <summary>
     /// Represents an applicant whose registration has been refused.
     /// </summary>
-    Refusee = 2, // L'inscription a été refusée, soit par l'administrateur, soit en raison de critères non remplis.
-    /// <summary>
-    /// Represents a registration that has been canceled, either by the participant or by the administrator, after validation.
-    /// </summary>
-    Annulee = 3 // L'inscription a été annulée, soit par le participant, soit par l'administrateur, après validation.
+    Refusee = 2 
 }

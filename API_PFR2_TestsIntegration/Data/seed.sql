@@ -1,51 +1,51 @@
--- Simulate enums using VARCHAR + CHECK
--- Roles: 'Utilisateur', 'Admin'
--- Statuts: 'EnAttente', 'Validee', 'Refusee'
+-- Enum pour les rôles utilisateur
+CREATE TYPE role_utilisateur AS ENUM ('Utilisateur','Admin');
 
--- Drop tables if they exist (order matters à cause des FK)
-IF OBJECT_ID('inscriptiontournoi', 'U') IS NOT NULL DROP TABLE inscriptiontournoi;
-IF OBJECT_ID('reservation', 'U') IS NOT NULL DROP TABLE reservation;
-IF OBJECT_ID('tournoi', 'U') IS NOT NULL DROP TABLE tournoi;
-IF OBJECT_ID('api_games', 'U') IS NOT NULL DROP TABLE api_games;
-IF OBJECT_ID('api_users', 'U') IS NOT NULL DROP TABLE api_users;
+-- Enum pour le statut des inscriptions aux tournois
+CREATE TYPE statut_inscription AS ENUM ('EnAttente','Validee','Refusee');
 
 -- Create tables
 CREATE TABLE api_users (
-    id INT IDENTITY(1,1) PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role VARCHAR(50) NOT NULL CHECK (role IN ('Utilisateur', 'Admin'))
+    role role_utilisateur NOT NULL
 );
 
 CREATE TABLE api_games (
-    id INT IDENTITY(1,1) PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     nom VARCHAR(255) NOT NULL,
-    description TEXT NULL
+    description TEXT
 );
 
 CREATE TABLE tournoi (
-    id INT IDENTITY(1,1) PRIMARY KEY,
-    nom VARCHAR(255) NULL,
-    date_debut DATETIME2 NOT NULL,
-    date_fin DATETIME2 NULL,
-    capacite INT NULL,
-    jeu_id INT NOT NULL FOREIGN KEY REFERENCES api_games(id)
+    id SERIAL PRIMARY KEY,
+    nom VARCHAR(255),
+    date_debut TIMESTAMP NOT NULL,
+    date_fin TIMESTAMP,
+    capacite INT,
+    jeu_id INT NOT NULL,
+    FOREIGN KEY (jeu_id) REFERENCES api_games(id)
 );
 
 CREATE TABLE reservation (
-    id INT IDENTITY(1,1) PRIMARY KEY,
-    utilisateur_id INT NOT NULL FOREIGN KEY REFERENCES api_users(id),
-    jeu_id INT NOT NULL FOREIGN KEY REFERENCES api_games(id),
-    date_debut DATETIME2 NOT NULL,
-    date_fin DATETIME2 NOT NULL
+    id SERIAL PRIMARY KEY,
+    utilisateur_id INT NOT NULL,
+    jeu_id INT NOT NULL,
+    date_debut TIMESTAMP NOT NULL,
+    date_fin TIMESTAMP NOT NULL,
+    FOREIGN KEY (utilisateur_id) REFERENCES api_users(id),
+    FOREIGN KEY (jeu_id) REFERENCES api_games(id)
 );
 
 CREATE TABLE inscriptiontournoi (
-    id INT IDENTITY(1,1) PRIMARY KEY,
-    utilisateur_id INT NOT NULL FOREIGN KEY REFERENCES api_users(id),
-    tournoi_id INT NOT NULL FOREIGN KEY REFERENCES tournoi(id),
-    statut VARCHAR(50) NOT NULL DEFAULT 'EnAttente' CHECK (statut IN ('EnAttente', 'Validee', 'Refusee')),
-    date_inscription DATETIME2 NOT NULL DEFAULT GETDATE()
+    id SERIAL PRIMARY KEY,
+    utilisateur_id INT NOT NULL,
+    tournoi_id INT NOT NULL,
+    statut statut_inscription NOT NULL DEFAULT 'EnAttente',
+    date_inscription TIMESTAMP NOT NULL DEFAULT NOW(),
+    FOREIGN KEY (utilisateur_id) REFERENCES api_users(id),
+    FOREIGN KEY (tournoi_id) REFERENCES tournoi(id)
 );
 
 -- Seed test data

@@ -15,10 +15,10 @@ public enum RoleUtilisateur
     /// <summary>
     /// Represents a standard user role with basic access permissions.
     /// </summary>
-    Utilisateur = 0, // Rôle d'utilisateur/joueur, avec des permissions limitées principalement à la réservation de jeux et à la participation aux tournois.
+    Utilisateur = 0, 
 
     /// <summary>
     /// Represents the administrator role, which grants extended permissions to manage games, users, reservations, and other system resources.
     /// </summary>
-    Admin = 1 // Rôle d'administrateur, avec des permissions étendues pour gérer les jeux, les utilisateurs, les réservations, etc.
+    Admin = 1 
 }
