@@ -39,7 +39,7 @@ public class Tournoi
     /// </summary>
     /// <remarks>The capacity value must be a non-negative integer. Setting the capacity to a value less than
     /// the current number of items will not reduce the number of items in the container.</remarks>
-    public int capacité { get; set; }
+    public int capacite { get; set; }
 
     // Un tournoi est associé à un jeu.
     /// <summary>

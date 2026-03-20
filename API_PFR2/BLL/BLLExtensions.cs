@@ -58,14 +58,14 @@ public static class BLLExtensions
         services.AddScoped<IJeuService, JeuService>();
         services.AddScoped<IReservationService, ReservationService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<ITournoiService, TournoiService>();
+        // services.AddScoped<IInscriptionTournoiService, InscriptionTournoiService>();
+
+        //services.AddScoped<IUtilisateurService, UtilisateurService>();
+
         // Utilisation de AddTransient pour les services qui n'ont pas besoin d'être partagés.
         services.AddTransient<IEmailService, EmailService>(); 
-        
-
-        // services.AddScoped<ITournoiService, TournoiService>();
-
-        // services.AddScoped<IUtilisateurService, UtilisateurService>();
-
+       
         return services;
     }
 

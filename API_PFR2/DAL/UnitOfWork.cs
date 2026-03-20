@@ -15,8 +15,8 @@ public class UnitOfWork : IUnitOfWork
     /// <inheritdoc/>
     public IReservationRepository Reservations { get; }
 
-    // /// <inheritdoc/>
-    // public ITournoiRepository Tournois { get; }
+     /// <inheritdoc/>
+     public ITournoiRepository Tournois { get; }
 
     // /// <inheritdoc/>
     // public IInscriptionTournoiRepository InscriptionsTournoi { get; }
@@ -29,7 +29,7 @@ public class UnitOfWork : IUnitOfWork
     {
         _connection = connection;
         Reservations = new ReservationRepository(_connection);
-        // Tournois = new TournoiRepository(_connection);
+        Tournois = new TournoiRepository(_connection);
         // InscriptionsTournoi = new InscriptionTournoiRepository(_connection);
     }
 
