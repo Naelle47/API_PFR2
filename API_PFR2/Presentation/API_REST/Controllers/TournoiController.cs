@@ -103,4 +103,29 @@ public class TournoiController : APIBaseController
         await _tournoiService.CancelAsync(id);
         return NoContent();
     }
+
+    /// <summary>
+    /// Updates an existing tournament if its capacity has not been reached.
+    /// </summary>
+    /// <param name="id">The unique identifier of the tournament to update.</param>
+    /// <param name="request">The updated tournament data.</param>
+    /// <response code="204">Tournament successfully updated.</response>
+    /// <response code="404">If the tournament does not exist.</response>
+    /// <response code="409">If the tournament is at full capacity.</response>
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateTournoiRequest request)
+    {
+        var tournoi = new Tournoi
+        {
+            id = id,
+            nom = request.Nom,
+            dateDebut = request.DateDebut,
+            dateFin = request.DateFin,
+            capacite = request.Capacite,
+            jeuId = request.JeuId
+        };
+
+        await _tournoiService.UpdateAsync(tournoi);
+        return NoContent();
+    }
 }

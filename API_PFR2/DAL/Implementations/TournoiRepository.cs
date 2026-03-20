@@ -69,4 +69,26 @@ public class TournoiRepository : ITournoiRepository
         int count = await _dbConnection.ExecuteScalarAsync<int>(sql, new { jeuId, date });
         return count > 0;
     }
+
+    /// <inheritdoc/>
+    public async Task<int> UpdateAsync(Tournoi tournoi)
+    {
+        string sql = @"UPDATE tournoi
+                   SET nom = @nom,
+                       date_debut = @dateDebut,
+                       date_fin = @dateFin,
+                       capacite = @capacite,
+                       jeu_id = @jeuId
+                   WHERE id = @id";
+        return await _dbConnection.ExecuteAsync(sql, tournoi);
+    }
+
+    /// <inheritdoc/>
+    public async Task<int> CountInscriptionsAsync(int tournoiId)
+    {
+        string sql = @"SELECT COUNT(1)
+                   FROM inscriptiontournoi
+                   WHERE tournoi_id = @tournoiId";
+        return await _dbConnection.ExecuteScalarAsync<int>(sql, new { tournoiId });
+    }
 }

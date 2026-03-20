@@ -59,4 +59,19 @@ public class TournoiService : ITournoiService
         // Delete the tournament
         await _tournoiRepository.DeleteAsync(id);
     }
+
+    /// <inheritdoc/>
+    public async Task UpdateAsync(Tournoi tournoi)
+    {
+        var current = await _tournoiRepository.GetByIdAsync(tournoi.id);
+        if (current == null)
+            throw new InvalidOperationException($"Tournament with id {tournoi.id} was not found.");
+
+        int inscriptionCount = await _tournoiRepository.CountInscriptionsAsync(tournoi.id);
+        if (inscriptionCount >= tournoi.capacite)
+            throw new InvalidOperationException(
+                $"Cannot update tournament capacity — {inscriptionCount} users are already registered.");
+
+        await _tournoiRepository.UpdateAsync(tournoi);
+    }
 }

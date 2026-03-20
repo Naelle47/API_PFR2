@@ -32,4 +32,14 @@ public interface ITournoiService
     /// <param name="id">The unique identifier of the tournament to cancel.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
     Task CancelAsync(int id);
+
+    /// <summary>
+    /// Updates a tournament if its capacity has not been reached.
+    /// </summary>
+    /// <param name="tournoi">The tournament with updated values.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when the tournament is not found or when it is at full capacity.
+    /// </exception>
+    Task UpdateAsync(Tournoi tournoi);
 }

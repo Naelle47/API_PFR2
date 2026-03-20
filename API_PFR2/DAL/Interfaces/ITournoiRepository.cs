@@ -40,4 +40,18 @@ public interface ITournoiRepository
     /// <param name="date">The date to check.</param>
     /// <returns>A task representing the asynchronous operation, containing <c>true</c> if a tournament exists; otherwise <c>false</c>.</returns>
     Task<bool> ExistsForGameAtDateAsync(int jeuId, DateTime date);
+
+    /// <summary>
+    /// Updates an existing tournament.
+    /// </summary>
+    /// <param name="tournoi">The tournament with updated values.</param>
+    /// <returns>A task representing the asynchronous operation, containing the number of rows affected.</returns>
+    Task<int> UpdateAsync(Tournoi tournoi);
+
+    /// <summary>
+    /// Counts the number of registrations for a specific tournament.
+    /// </summary>
+    /// <param name="tournoiId">The identifier of the tournament.</param>
+    /// <returns>A task representing the asynchronous operation, containing the number of registrations.</returns>
+    Task<int> CountInscriptionsAsync(int tournoiId);
 }
