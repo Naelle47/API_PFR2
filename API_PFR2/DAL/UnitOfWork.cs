@@ -18,8 +18,8 @@ public class UnitOfWork : IUnitOfWork
      /// <inheritdoc/>
      public ITournoiRepository Tournois { get; }
 
-    // /// <inheritdoc/>
-    // public IInscriptionTournoiRepository InscriptionsTournoi { get; }
+     /// <inheritdoc/>
+     public IInscriptionTournoiRepository InscriptionsTournoi { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UnitOfWork"/> class.
@@ -30,7 +30,7 @@ public class UnitOfWork : IUnitOfWork
         _connection = connection;
         Reservations = new ReservationRepository(_connection);
         Tournois = new TournoiRepository(_connection);
-        // InscriptionsTournoi = new InscriptionTournoiRepository(_connection);
+        InscriptionsTournoi = new InscriptionTournoiRepository(_connection);
     }
 
     /// <inheritdoc/>

@@ -59,7 +59,7 @@ public static class BLLExtensions
         services.AddScoped<IReservationService, ReservationService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ITournoiService, TournoiService>();
-        // services.AddScoped<IInscriptionTournoiService, InscriptionTournoiService>();
+        services.AddScoped<IInscriptionTournoiService, InscriptionTournoiService>();
 
         //services.AddScoped<IUtilisateurService, UtilisateurService>();
 

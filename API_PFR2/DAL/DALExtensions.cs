@@ -54,8 +54,10 @@ public static class DALExtensions
         services.AddScoped<IReservationRepository, ReservationRepository>();
         services.AddScoped<IUtilisateurRepository, UtilisateurRepository>();
         services.AddScoped<ITournoiRepository, TournoiRepository>();
-        //services.AddScoped<IInscriptionTournoiRepository, InscriptionTournoiRepository>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IInscriptionTournoiRepository, InscriptionTournoiRepository>();
+
+
+        services.AddTransient<IUnitOfWork, UnitOfWork>();
 
         return services;
     }

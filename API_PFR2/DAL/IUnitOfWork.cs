@@ -18,15 +18,15 @@ public interface IUnitOfWork : IDisposable
     /// </summary>
     IReservationRepository Reservations { get; }
 
-    // /// <summary>
-    // /// Gets the tournoi repository within the current transaction scope.
-    // /// </summary>
-    // ITournoiRepository Tournois { get; }
+     /// <summary>
+     /// Gets the tournoi repository within the current transaction scope.
+     /// </summary>
+     ITournoiRepository Tournois { get; }
 
-    // /// <summary>
-    // /// Gets the inscription tournoi repository within the current transaction scope.
-    // /// </summary>
-    // IInscriptionTournoiRepository InscriptionsTournoi { get; }
+     /// <summary>
+     /// Gets the inscription tournoi repository within the current transaction scope.
+     /// </summary>
+     IInscriptionTournoiRepository InscriptionsTournoi { get; }
 
     /// <summary>
     /// Begins a new database transaction.
