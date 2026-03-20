@@ -37,6 +37,9 @@ namespace API_PFR2.BLL.Services.Implementations
 
             // Verify the provided password against the stored password hash
             bool isPasswordValid = BCrypt.Net.BCrypt.Verify(password, utilisateur.passwordHash);
+            Console.WriteLine($"HASH: {utilisateur.passwordHash}");
+            Console.WriteLine($"VERIFY pasteque: {BCrypt.Net.BCrypt.Verify("pasteque", utilisateur.passwordHash)}");
+            Console.WriteLine($"VERIFY input: {BCrypt.Net.BCrypt.Verify(password, utilisateur.passwordHash)}");
             if (!isPasswordValid)
                 return null;
 

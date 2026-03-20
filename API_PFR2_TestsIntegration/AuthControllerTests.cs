@@ -19,21 +19,16 @@ public class AuthControllerTests : AbstractIntegrationTest
     [Fact]
     public async Task Login_ShouldReturnToken_WhenCredentialsAreValid()
     {
-        // Arrange
         var request = new LoginRequest
         {
             Email = "user1@nivo.fr",
             Password = "pasteque"
         };
 
-        // Act
         var response = await _client.PostAsJsonAsync("/api/auth/login", request);
+        var content = await response.Content.ReadAsStringAsync();
 
-        // Assert
-        response.EnsureSuccessStatusCode();
-        var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
-        Assert.NotNull(result);
-        Assert.NotEmpty(result.Token);
+        Assert.Fail($"Status: {response.StatusCode}, Content: {content}");
     }
 
     [Fact]
