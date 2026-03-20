@@ -26,18 +26,10 @@ public class UtilisateurRepository : IUtilisateurRepository
 
     public async Task<Utilisateur?> GetByEmailAsync(string email)
     {
-        string sql = @"SELECT id, email, password AS passwordHash, role
-                       FROM api_users
-                       WHERE email = @Email";
-        try
-        {
-            return await _dbConnection.QueryFirstOrDefaultAsync<Utilisateur>(sql, new { Email = email });
-
-        }
-        catch (Exception ex)
-        {
-            return null;
-        }
+        string sql = @"SELECT id, email, password AS passwordHash, role::text AS role
+                   FROM api_users
+                   WHERE email = @Email";
+        return await _dbConnection.QueryFirstOrDefaultAsync<Utilisateur>(sql, new { Email = email });
     }
 
     public async Task<bool> ExistsAsync(string email)

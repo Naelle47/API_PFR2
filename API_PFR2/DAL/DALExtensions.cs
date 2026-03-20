@@ -1,9 +1,10 @@
 ﻿using System.Data;
 using API_PFR2.DAL.Implementations;
 using API_PFR2.DAL.Interfaces;
+using API_PFR2.DAL.TypeHandlers;
 using API_PFR2.Domain.Enums;
+using Dapper;
 using Npgsql;
-
 namespace API_PFR2.DAL;
 
 /// <summary>
@@ -15,15 +16,9 @@ public static class DALExtensions
     /// <summary>
     /// Registers the Data Access Layer services in the dependency injection container.
     /// </summary>
-    /// <param name="services">
-    /// The service collection used to register application services.
-    /// </param>
-    /// <param name="configuration">
-    /// The application configuration used to retrieve the database connection string.
-    /// </param>
-    /// <returns>
-    /// The updated <see cref="IServiceCollection"/> with DAL services registered.
-    /// </returns>
+    /// <param name="services">The service collection used to register application services.</param>
+    /// <param name="configuration">The application configuration used to retrieve the database connection string.</param>
+    /// <returns>The updated <see cref="IServiceCollection"/> with DAL services registered.</returns>
     /// <exception cref="InvalidOperationException">
     /// Thrown when the required database connection string is not found in the configuration.
     /// </exception>
@@ -34,14 +29,16 @@ public static class DALExtensions
             ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
         // -------------------------------
+        // Register Dapper type handlers
+        // -------------------------------
+        //SqlMapper.AddTypeHandler(new RoleUtilisateurHandler());
+
+        // -------------------------------
         // Create NpgsqlDataSource and map enums
         // -------------------------------
         var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
-
-        // Map PostgreSQL enums to C# enums
         dataSourceBuilder.MapEnum<RoleUtilisateur>("role_utilisateur");
         dataSourceBuilder.MapEnum<StatutInscription>("statut_inscription");
-
         var dataSource = dataSourceBuilder.Build();
 
         // Inject the DataSource as singleton
