@@ -2,6 +2,7 @@
 using API_PFR2.DAL.Interfaces;
 using API_PFR2.Domain.Entities;
 using API_PFR2.Domain.Enums;
+using API_PFR2.Domain.Exceptions;
 namespace API_PFR2.BLL.Services.Implementations;
 
 /// <summary>
@@ -47,16 +48,17 @@ public class InscriptionTournoiService : IInscriptionTournoiService
         // Vérifier si l'utilisateur est déjà inscrit
         bool alreadyRegistered = await _inscriptionRepository.ExistsAsync(utilisateurId, tournoiId);
         if (alreadyRegistered)
-            throw new InvalidOperationException("User is already registered for this tournament.");
+            throw new ConflictException("User is already registered for this tournament.");
 
-        // Vérifier si le tournoi existe et si la capacité est atteinte
+        // Vérifier si le tournoi existe
         var tournoi = await _tournoiRepository.GetByIdAsync(tournoiId);
         if (tournoi == null)
-            throw new InvalidOperationException($"Tournament with id {tournoiId} was not found.");
+            throw new NotFoundEntityException(nameof(Tournoi), tournoiId);
 
+        // Vérifier si la capacité est atteinte
         int inscriptionCount = await _tournoiRepository.CountInscriptionsAsync(tournoiId);
         if (inscriptionCount >= tournoi.capacite)
-            throw new InvalidOperationException("Tournament is at full capacity.");
+            throw new ConflictException("Tournament is at full capacity.");
 
         var inscription = new InscriptionTournoi
         {

@@ -1,6 +1,7 @@
 ﻿using API_PFR2.BLL.Services.Interfaces;
 using API_PFR2.DAL.Interfaces;
 using API_PFR2.Domain.Entities;
+using API_PFR2.Domain.Exceptions;
 namespace API_PFR2.BLL.Services.Implementations;
 
 /// <summary>
@@ -51,7 +52,7 @@ public class TournoiService : ITournoiService
     {
         var tournoi = await _tournoiRepository.GetByIdAsync(id);
         if (tournoi == null)
-            throw new InvalidOperationException($"Tournament with id {id} was not found.");
+            throw new NotFoundEntityException(nameof(Tournoi), id);
 
         // Cancel reservations and notify users
         await _reservationService.CancelReservationsForTournamentAsync(tournoi.jeuId, tournoi.dateDebut);
@@ -65,11 +66,11 @@ public class TournoiService : ITournoiService
     {
         var current = await _tournoiRepository.GetByIdAsync(tournoi.id);
         if (current == null)
-            throw new InvalidOperationException($"Tournament with id {tournoi.id} was not found.");
+            throw new NotFoundEntityException(nameof(Tournoi), tournoi.id);
 
         int inscriptionCount = await _tournoiRepository.CountInscriptionsAsync(tournoi.id);
         if (inscriptionCount >= tournoi.capacite)
-            throw new InvalidOperationException(
+            throw new ConflictException(
                 $"Cannot update tournament capacity — {inscriptionCount} users are already registered.");
 
         await _tournoiRepository.UpdateAsync(tournoi);
