@@ -2,6 +2,7 @@
 using API_PFR2.DAL.Interfaces;
 using API_PFR2.Domain.Entities;
 using API_PFR2.Domain.Enums;
+using API_PFR2.Domain.Exceptions;
 using Moq;
 namespace API_PFR2_TestsUnitaires;
 
@@ -30,7 +31,7 @@ public class InscriptionTournoiServiceTests
             .ReturnsAsync(true);
 
         // Act & Assert
-        await Assert.ThrowsAsync<InvalidOperationException>(
+        await Assert.ThrowsAsync<ConflictException>(
             () => _inscriptionService.RegisterAsync(1, 1)
         );
     }
@@ -51,7 +52,7 @@ public class InscriptionTournoiServiceTests
             .ReturnsAsync(2);
 
         // Act & Assert
-        await Assert.ThrowsAsync<InvalidOperationException>(
+        await Assert.ThrowsAsync<ConflictException>(
             () => _inscriptionService.RegisterAsync(1, 1)
         );
     }

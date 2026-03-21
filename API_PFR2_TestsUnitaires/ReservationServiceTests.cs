@@ -1,6 +1,7 @@
 ﻿using API_PFR2.BLL.Services.Implementations;
 using API_PFR2.DAL.Interfaces;
 using API_PFR2.Domain.Entities;
+using API_PFR2.Domain.Exceptions;
 using Moq;
 namespace API_PFR2_TestsUnitaires;
 
@@ -36,7 +37,7 @@ public class ReservationServiceTests
             .ReturnsAsync(true);
 
         // Act & Assert
-        await Assert.ThrowsAsync<InvalidOperationException>(
+        await Assert.ThrowsAsync<ConflictException>(
             () => _reservationService.CreateReservationAsync(reservation)
         );
     }
@@ -96,13 +97,11 @@ public class ReservationServiceTests
         // Act
         await _reservationService.CancelReservationsForTournamentAsync(1, DateTime.Today);
 
-        // Assert — vérifie que l'email a été envoyé
+        // Assert
         _emailServiceMock.Verify(
             e => e.Send("user1@nivo.fr", It.IsAny<string>(), It.IsAny<string>()),
             Times.Once
         );
-
-        // Assert — vérifie que les réservations ont été supprimées
         _reservationRepositoryMock.Verify(
             r => r.DeleteByGameAndDateAsync(1, DateTime.Today),
             Times.Once
