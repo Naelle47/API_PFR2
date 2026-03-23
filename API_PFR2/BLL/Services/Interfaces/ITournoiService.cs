@@ -1,4 +1,5 @@
 ﻿using API_PFR2.Domain.Entities;
+using API_PFR2.Domain.Exceptions;
 namespace API_PFR2.BLL.Services.Interfaces;
 
 /// <summary>
@@ -31,5 +32,21 @@ public interface ITournoiService
     /// </summary>
     /// <param name="id">The unique identifier of the tournament to cancel.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
+    /// <exception cref="NotFoundEntityException">
+    /// Thrown when the specified tournament does not exist.
+    /// </exception>
     Task CancelAsync(int id);
+
+    /// <summary>
+    /// Updates a tournament if its capacity has not been reached.
+    /// </summary>
+    /// <param name="tournoi">The tournament with updated values.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    /// <exception cref="NotFoundEntityException">
+    /// Thrown when the specified tournament does not exist.
+    /// </exception>
+    /// <exception cref="ConflictException">
+    /// Thrown when the tournament is at full capacity.
+    /// </exception>
+    Task UpdateAsync(Tournoi tournoi);
 }

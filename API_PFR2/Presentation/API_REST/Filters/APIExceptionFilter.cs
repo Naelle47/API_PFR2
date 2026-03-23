@@ -2,9 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-
-
-
 namespace API_PFR2.Presentation.API_REST.Filters;
 
 /// <summary>
@@ -24,31 +21,24 @@ public class APIExceptionFilterAttribute : ExceptionFilterAttribute
     /// Initializes a new instance of the APIExceptionFilterAttribute class, configuring handlers for known exception types
     /// to enable custom error responses in API controllers.
     /// </summary>
-    /// <remarks>This constructor sets up a mapping between exception types and their corresponding handling actions.
-    /// By default, it registers a handler for NotFoundEntityException, allowing the filter to generate appropriate API
-    /// responses when such exceptions are encountered. Additional exception handlers can be added to extend error handling
-    /// as needed.</remarks>
     public APIExceptionFilterAttribute()
     {
-        // Register known exception types and handlers.
         _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
         {
-            {typeof (NotFoundEntityException),  HandleNotFoundException},
-            { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException }
+            { typeof(NotFoundEntityException), HandleNotFoundException },
+            { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
+            { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
+            { typeof(ConflictException), HandleConflictException }
         };
     }
 
     /// <summary>
     /// Handles exceptions that occur during the execution of an action method in an ASP.NET Core application.
     /// </summary>
-    /// <remarks>This method enables custom exception handling logic to be executed before invoking the base
-    /// exception handling. Override this method to implement application-specific error handling or logging
-    /// strategies.</remarks>
     /// <param name="context">The context for the exception, which provides information about the exception and the current HTTP request.</param>
     public override void OnException(ExceptionContext context)
     {
         HandleException(context);
-
         base.OnException(context);
     }
 
@@ -61,7 +51,6 @@ public class APIExceptionFilterAttribute : ExceptionFilterAttribute
         Type type = context.Exception.GetType();
         if (_exceptionHandlers.ContainsKey(type))
         {
-
             _exceptionHandlers[type].Invoke(context);
             return;
         }
@@ -75,7 +64,6 @@ public class APIExceptionFilterAttribute : ExceptionFilterAttribute
         HandleUnknownException(context);
     }
 
-
     /// <summary>
     /// Handles invalid model state errors and returns a 400 Bad Request response.
     /// </summary>
@@ -88,7 +76,6 @@ public class APIExceptionFilterAttribute : ExceptionFilterAttribute
         };
 
         context.Result = new BadRequestObjectResult(details);
-
         context.ExceptionHandled = true;
     }
 
@@ -100,16 +87,14 @@ public class APIExceptionFilterAttribute : ExceptionFilterAttribute
     {
         var exception = context.Exception as NotFoundEntityException;
 
-        var details = new ProblemDetails()
+        var details = new ProblemDetails
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
             Title = "The specified resource was not found.",
-            Detail = exception?.Message,
-
+            Detail = exception?.Message
         };
 
         context.Result = new NotFoundObjectResult(details);
-
         context.ExceptionHandled = true;
     }
 
@@ -135,7 +120,7 @@ public class APIExceptionFilterAttribute : ExceptionFilterAttribute
     }
 
     /// <summary>
-    /// Handles forbidden access exceptions and returns a 403 Forbidden response.
+    /// Handles <see cref="ForbiddenAccessException"/> and returns a 403 Forbidden response.
     /// </summary>
     /// <param name="context">The exception context associated with the current request.</param>
     private void HandleForbiddenAccessException(ExceptionContext context)
@@ -155,6 +140,27 @@ public class APIExceptionFilterAttribute : ExceptionFilterAttribute
         context.ExceptionHandled = true;
     }
 
+    /// <summary>
+    /// Handles <see cref="ConflictException"/> and returns a 409 Conflict response.
+    /// </summary>
+    /// <param name="context">The exception context associated with the current request.</param>
+    private void HandleConflictException(ExceptionContext context)
+    {
+        var details = new ProblemDetails
+        {
+            Status = StatusCodes.Status409Conflict,
+            Title = "Conflict",
+            Detail = context.Exception.Message,
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.8"
+        };
+
+        context.Result = new ObjectResult(details)
+        {
+            StatusCode = StatusCodes.Status409Conflict
+        };
+
+        context.ExceptionHandled = true;
+    }
 
     /// <summary>
     /// Handles unexpected exceptions and returns a 500 Internal Server Error response.
@@ -176,7 +182,4 @@ public class APIExceptionFilterAttribute : ExceptionFilterAttribute
 
         context.ExceptionHandled = true;
     }
-
-
-
 }

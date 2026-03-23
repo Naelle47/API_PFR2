@@ -1,6 +1,7 @@
 ﻿using API_PFR2.BLL.Services.Interfaces;
 using API_PFR2.DAL.Interfaces;
 using API_PFR2.Domain.Entities;
+using API_PFR2.Domain.Exceptions;
 namespace API_PFR2.BLL.Services.Implementations;
 
 /// <summary>
@@ -35,9 +36,8 @@ public class ReservationService : IReservationService
         bool exists = await _reservationRepository
             .ExistsForGameAtDateAsync(reservation.jeuId, reservation.dateDebut);
         if (exists)
-        {
-            throw new InvalidOperationException("This game is already reserved for the selected date.");
-        }
+            throw new ConflictException("This game is already reserved for the selected date.");
+
         return await _reservationRepository.AddAsync(reservation);
     }
 
