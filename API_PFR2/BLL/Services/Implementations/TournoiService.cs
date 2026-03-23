@@ -9,24 +9,29 @@ namespace API_PFR2.BLL.Services.Implementations;
 /// </summary>
 /// <remarks>
 /// This service coordinates tournament operations, including creation and cancellation.
-/// When a tournament is cancelled, all associated reservations are cancelled and affected users are notified.
+/// When a tournament is created, all conflicting reservations are cancelled and affected
+/// users are notified by email. When a tournament is cancelled, all registrations are deleted.
 /// </remarks>
 public class TournoiService : ITournoiService
 {
     private readonly ITournoiRepository _tournoiRepository;
     private readonly IReservationService _reservationService;
+    private readonly IInscriptionTournoiService _inscriptionTournoiService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TournoiService"/> class.
     /// </summary>
     /// <param name="tournoiRepository">Repository used to access tournament data.</param>
     /// <param name="reservationService">Service used to manage reservation cancellations.</param>
+    /// <param name="inscriptionTournoiService">Service used to manage tournament registrations.</param>
     public TournoiService(
         ITournoiRepository tournoiRepository,
-        IReservationService reservationService)
+        IReservationService reservationService,
+        IInscriptionTournoiService inscriptionTournoiService)
     {
         _tournoiRepository = tournoiRepository;
         _reservationService = reservationService;
+        _inscriptionTournoiService = inscriptionTournoiService;
     }
 
     /// <inheritdoc/>
@@ -58,10 +63,10 @@ public class TournoiService : ITournoiService
         if (tournoi == null)
             throw new NotFoundEntityException(nameof(Tournoi), id);
 
-        // Annulation des réservations conflictuelles et notification des utilisateurs
-        await _reservationService.CancelReservationsForTournamentAsync(
-            tournoi.jeuId, tournoi.dateDebut);
+        // Suppression des inscriptions au tournoi
+        await _inscriptionTournoiService.CancelByTournoiIdAsync(id);
 
+        // Suppression du tournoi
         await _tournoiRepository.DeleteAsync(id);
     }
 
