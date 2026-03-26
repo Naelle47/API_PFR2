@@ -62,7 +62,7 @@ public class JeuRepository : IJeuRepository
     public async Task<bool> ExistsAsync(int id)
     {
         string sql = @"SELECT COUNT(1)
-                       FROM api_game
+                       FROM api_games
                        WHERE id = @Id";
         int count = await _dbConnection.ExecuteScalarAsync<int>(sql, new { Id = id });
         return count > 0;
