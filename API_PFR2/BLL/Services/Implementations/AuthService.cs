@@ -54,12 +54,20 @@ namespace API_PFR2.BLL.Services.Implementations
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
+            var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, utilisateur.id.ToString()),
                 new Claim(ClaimTypes.Email, utilisateur.email),
-                new Claim(ClaimTypes.Role, utilisateur.role.ToString())
+                new Claim(ClaimTypes.Role, "Utilisateur")
+
             };
+            // Si l'utilisateur est admin, on lui ajoute aussi le rôle Admin
+            if (utilisateur.role.ToString() == "Admin")
+            {
+                claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+            }
+
+
 
             var token = new JwtSecurityToken(
                 issuer: issuer,
