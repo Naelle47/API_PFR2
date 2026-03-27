@@ -50,7 +50,7 @@ public class ReservationController : APIBaseController
             };
 
             int id = await _reservationService.CreateReservationAsync(reservation);
-            return StatusCode(201, id);
+            return Created($"/api/reservation/{id}", id);
         }
         catch (ConflictException ex)
         {
