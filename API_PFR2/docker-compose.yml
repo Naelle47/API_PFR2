@@ -2,9 +2,10 @@ version: '3.8'
 
 services:
   api_pfr2:
-    build:
-      context: ./API_PFR2
-      dockerfile: Dockerfile
+    # build:
+    #   context: ./API_PFR2
+    #   dockerfile: Dockerfile
+    image: ghcr.io/naelle47/api_pfr2:master
     ports:
       - "32768:8080"
     environment:
