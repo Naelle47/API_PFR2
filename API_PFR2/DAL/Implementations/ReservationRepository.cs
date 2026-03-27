@@ -66,10 +66,10 @@ public class ReservationRepository : IReservationRepository
     public async Task<int> DeleteByGameAndDateAsync(int jeuId, DateTime date)
     {
         string sql = @"
-            DELETE FROM reservation
-            WHERE jeu_id = @jeuId
-            AND @date BETWEEN date_debut AND date_fin
-        ";
+        DELETE FROM reservation
+        WHERE jeu_id = @jeuId
+        AND DATE(date_debut) = DATE(@date)
+    ";
         return await _connection.ExecuteAsync(sql, new { jeuId, date });
     }
 }
