@@ -37,7 +37,6 @@ public class ReservationController : APIBaseController
     /// <response code="201">Reservation successfully created.</response>
     /// <response code="409">The game is already reserved for the selected date.</response>
     [HttpPost]
-    [HttpPost]
     public async Task<ActionResult<int>> CreateReservation([FromBody] CreateReservationRequest request)
     {
         try
