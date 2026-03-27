@@ -1,9 +1,10 @@
 ﻿using API_PFR2.BLL.Services.Interfaces;
 using API_PFR2.Domain.Entities;
+using API_PFR2.Domain.Exceptions;
 using API_PFR2.Presentation.API_REST.DTO.Requests;
 using API_PFR2.Presentation.API_REST.DTO.Responses;
 using Microsoft.AspNetCore.Mvc;
-using API_PFR2.Domain.Exceptions;
+using Npgsql;
 namespace API_PFR2.Presentation.API_REST.Controllers;
 
 /// <summary>
@@ -36,6 +37,7 @@ public class ReservationController : APIBaseController
     /// <response code="201">Reservation successfully created.</response>
     /// <response code="409">The game is already reserved for the selected date.</response>
     [HttpPost]
+    [HttpPost]
     public async Task<ActionResult<int>> CreateReservation([FromBody] CreateReservationRequest request)
     {
         try
@@ -54,6 +56,10 @@ public class ReservationController : APIBaseController
         catch (ConflictException ex)
         {
             return Conflict(new { Message = ex.Message });
+        }
+        catch (PostgresException ex) when (ex.SqlState == "23505") // unique constraint violation
+        {
+            return Conflict(new { Message = "This game is already reserved for the selected date." });
         }
     }
 
