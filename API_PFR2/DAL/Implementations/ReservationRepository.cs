@@ -57,7 +57,7 @@ public class ReservationRepository : IReservationRepository
             SELECT *
             FROM reservation
             WHERE jeu_id = @jeuId
-            AND @date BETWEEN date_debut AND date_fin
+            AND DATE(date_debut) = DATE(@date)
         ";
         return await _connection.QueryAsync<Reservation>(sql, new { jeuId, date });
     }

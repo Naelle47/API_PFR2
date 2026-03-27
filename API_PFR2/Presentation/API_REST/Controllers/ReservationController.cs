@@ -3,6 +3,7 @@ using API_PFR2.Domain.Entities;
 using API_PFR2.Presentation.API_REST.DTO.Requests;
 using API_PFR2.Presentation.API_REST.DTO.Responses;
 using Microsoft.AspNetCore.Mvc;
+using API_PFR2.Domain.Exceptions;
 namespace API_PFR2.Presentation.API_REST.Controllers;
 
 /// <summary>
@@ -37,16 +38,23 @@ public class ReservationController : APIBaseController
     [HttpPost]
     public async Task<ActionResult<int>> CreateReservation([FromBody] CreateReservationRequest request)
     {
-        var reservation = new Reservation
+        try
         {
-            jeuId = request.JeuId,
-            utilisateurId = request.UtilisateurId,
-            dateDebut = request.DateDebut,
-            dateFin = request.DateFin
-        };
+            var reservation = new Reservation
+            {
+                jeuId = request.JeuId,
+                utilisateurId = request.UtilisateurId,
+                dateDebut = request.DateDebut,
+                dateFin = request.DateFin
+            };
 
-        int id = await _reservationService.CreateReservationAsync(reservation);
-        return CreatedAtAction(nameof(GetByGameAndDate), new { jeuId = reservation.jeuId, date = reservation.dateDebut }, id);
+            int id = await _reservationService.CreateReservationAsync(reservation);
+            return CreatedAtAction(nameof(GetByGameAndDate), new { jeuId = reservation.jeuId, date = reservation.dateDebut }, id);
+        }
+        catch (ConflictException ex)
+        {
+            return Conflict(new { Message = ex.Message });
+        }
     }
 
     /// <summary>
