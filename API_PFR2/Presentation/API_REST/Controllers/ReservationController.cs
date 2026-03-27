@@ -51,7 +51,7 @@ public class ReservationController : APIBaseController
             };
 
             int id = await _reservationService.CreateReservationAsync(reservation);
-            return CreatedAtAction(nameof(GetByGameAndDate), new { jeuId = reservation.jeuId, date = reservation.dateDebut }, id);
+            return StatusCode(201, id);
         }
         catch (ConflictException ex)
         {
