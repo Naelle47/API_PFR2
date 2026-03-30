@@ -6,6 +6,7 @@ services:
     #   context: ./API_PFR2
     #   dockerfile: Dockerfile
     image: ghcr.io/naelle47/api_pfr2:master
+    # image : ghcr.io/naelle47/api_pfr2:latest
     ports:
       - "32768:8080"
     environment:
