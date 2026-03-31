@@ -9,12 +9,20 @@ namespace API_PFR2.BLL.Services.Implementations;
 /// </summary>
 public class EmailService : IEmailService
 {
-    private readonly string _smtpServer = "smtp.gmail.com";
-    private readonly int _smtpPort = 587;
-    private readonly string _senderEmail = "noreply@nivo.com";
-    private readonly string _senderPassword = "password";
+    private readonly string _smtpServer;
+    private readonly int _smtpPort;
+    private readonly string _senderEmail;
+    private readonly string _senderPassword;
 
-    /// <inheritdoc/>
+    public EmailService(IConfiguration configuration)
+    {
+        // Lecture depuis la configuration — plus de credentials hardcodés
+        _smtpServer = configuration["Email:SmtpServer"] ?? "smtp.gmail.com";
+        _smtpPort = int.Parse(configuration["Email:SmtpPort"] ?? "587");
+        _senderEmail = configuration["Email:SenderEmail"] ?? string.Empty;
+        _senderPassword = configuration["Email:SenderPassword"] ?? string.Empty;
+    }
+
     public void Send(string to, string subject, string body)
     {
         var message = new MailMessage();
@@ -28,7 +36,8 @@ public class EmailService : IEmailService
             Credentials = new NetworkCredential(_senderEmail, _senderPassword),
             EnableSsl = true
         };
-
         client.Send(message);
+        // Confirmation en console — utile en développement
+        Console.WriteLine($"[EMAIL] Envoyé à {to} | Sujet : {subject}");
     }
 }
