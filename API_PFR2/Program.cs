@@ -10,7 +10,7 @@ using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
-NpgsqlConnection.GlobalTypeMapper.MapEnum<StatutInscription>("statut_inscription");
+
 
 // ---------------------------
 // Configuration files

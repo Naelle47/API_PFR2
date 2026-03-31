@@ -3,6 +3,7 @@ using API_PFR2.DAL.Interfaces;
 using API_PFR2.Domain.Entities;
 using API_PFR2.Domain.Exceptions;
 using Moq;
+
 namespace API_PFR2_TestsUnitaires;
 
 public class ReservationServiceTests
@@ -32,6 +33,7 @@ public class ReservationServiceTests
             dateFin = DateTime.Today.AddHours(2),
             utilisateurId = 1
         };
+
         _reservationRepositoryMock
             .Setup(r => r.ExistsForGameAtDateAsync(reservation.jeuId, reservation.dateDebut))
             .ReturnsAsync(true);
@@ -53,9 +55,11 @@ public class ReservationServiceTests
             dateFin = DateTime.Today.AddHours(2),
             utilisateurId = 1
         };
+
         _reservationRepositoryMock
             .Setup(r => r.ExistsForGameAtDateAsync(reservation.jeuId, reservation.dateDebut))
             .ReturnsAsync(false);
+
         _reservationRepositoryMock
             .Setup(r => r.AddAsync(reservation))
             .ReturnsAsync(1);
@@ -70,14 +74,7 @@ public class ReservationServiceTests
     [Fact]
     public async Task CancelReservationsForTournamentAsync_ShouldSendEmail_WhenUsersHaveReservations()
     {
-        // Arrange
-        var utilisateur = new Utilisateur
-        {
-            id = 1,
-            email = "user1@nivo.fr",
-            passwordHash = "hash",
-            role = API_PFR2.Domain.Enums.RoleUtilisateur.Utilisateur
-        };
+        // Arrange — EmailUtilisateur directement dans la réservation
         var reservations = new List<Reservation>
         {
             new Reservation
@@ -87,9 +84,10 @@ public class ReservationServiceTests
                 utilisateurId = 1,
                 dateDebut = DateTime.Today,
                 dateFin = DateTime.Today.AddHours(2),
-                utilisateur = utilisateur
+                EmailUtilisateur = "user1@nivo.fr"
             }
         };
+
         _reservationRepositoryMock
             .Setup(r => r.GetByGameAndDateAsync(1, DateTime.Today))
             .ReturnsAsync(reservations);
@@ -97,11 +95,13 @@ public class ReservationServiceTests
         // Act
         await _reservationService.CancelReservationsForTournamentAsync(1, DateTime.Today);
 
-        // Assert
+        // Assert — l'email doit être envoyé à user1@nivo.fr
         _emailServiceMock.Verify(
             e => e.Send("user1@nivo.fr", It.IsAny<string>(), It.IsAny<string>()),
             Times.Once
         );
+
+        // Assert — la suppression doit être appelée
         _reservationRepositoryMock.Verify(
             r => r.DeleteByGameAndDateAsync(1, DateTime.Today),
             Times.Once
