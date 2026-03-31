@@ -80,6 +80,7 @@ public class ReservationController : APIBaseController
             Id = r.id,
             JeuId = r.jeuId,
             UtilisateurId = r.utilisateurId,
+            EmailUtilisateur = r.EmailUtilisateur,
             DateDebut = r.dateDebut,
             DateFin = r.dateFin
         }).ToList();

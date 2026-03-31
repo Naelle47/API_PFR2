@@ -41,9 +41,9 @@ public class Reservation
     public int jeuId { get; set; }
 
     /// <summary>
-    /// Gets or sets the user associated with the reservation.
+    /// Gets or sets the email of the user who made the reservation.
     /// </summary>
-    public Utilisateur? utilisateur { get; set; }
+    public string? EmailUtilisateur { get; set; }
 
     /// <summary>
     /// Gets or sets the game associated with the reservation.

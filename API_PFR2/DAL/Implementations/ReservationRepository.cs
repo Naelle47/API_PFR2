@@ -54,10 +54,11 @@ public class ReservationRepository : IReservationRepository
     public async Task<IEnumerable<Reservation>> GetByGameAndDateAsync(int jeuId, DateTime date)
     {
         string sql = @"
-            SELECT *
-            FROM reservation
-            WHERE jeu_id = @jeuId
-            AND DATE(date_debut) = DATE(@date)
+          SELECT r.*, u.email AS EmailUtilisateur
+          FROM reservation r
+          INNER JOIN api_users u ON u.id = r.utilisateur_id
+          WHERE r.jeu_id = @jeuId
+          AND DATE(r.date_debut) = DATE(@date)
         ";
         return await _connection.QueryAsync<Reservation>(sql, new { jeuId, date });
     }

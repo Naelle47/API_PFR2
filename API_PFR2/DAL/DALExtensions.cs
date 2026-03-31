@@ -36,6 +36,8 @@ public static class DALExtensions
         // -------------------------------
         // Create NpgsqlDataSource and map enums
         // -------------------------------
+        Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+
         var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
         dataSourceBuilder.MapEnum<RoleUtilisateur>("role_utilisateur");
         dataSourceBuilder.MapEnum<StatutInscription>("statut_inscription");

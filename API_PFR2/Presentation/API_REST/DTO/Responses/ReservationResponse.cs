@@ -16,6 +16,11 @@ public class ReservationResponse
     public int UtilisateurId { get; set; }
 
     /// <summary>
+    /// Gets or sets the email of the user who made the reservation.
+    /// </summary>
+    public string? EmailUtilisateur { get; set; }
+
+    /// <summary>
     /// Gets or sets the identifier of the reserved game.
     /// </summary>
     public int JeuId { get; set; }

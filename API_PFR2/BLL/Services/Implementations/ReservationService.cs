@@ -65,10 +65,10 @@ public class ReservationService : IReservationService
         var reservations = await _reservationRepository.GetByGameAndDateAsync(jeuId, date);
         foreach (var reservation in reservations)
         {
-            if (reservation.utilisateur != null)
+            if (!string.IsNullOrEmpty(reservation.EmailUtilisateur))
             {
                 _emailService.Send(
-                    reservation.utilisateur.email,
+                    reservation.EmailUtilisateur,
                     "Reservation Cancelled",
                     "Your reservation has been cancelled because a tournament has been scheduled for this game."
                 );
