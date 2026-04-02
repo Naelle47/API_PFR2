@@ -39,8 +39,7 @@ public class ReservationController : APIBaseController
     [HttpPost]
     public async Task<ActionResult<int>> CreateReservation([FromBody] CreateReservationRequest request)
     {
-        try
-        {
+
             var reservation = new Reservation
             {
                 jeuId = request.JeuId,
@@ -51,15 +50,6 @@ public class ReservationController : APIBaseController
 
             int id = await _reservationService.CreateReservationAsync(reservation);
             return Created($"/api/reservation/{id}", id);
-        }
-        catch (ConflictException ex)
-        {
-            return Conflict(new { Message = ex.Message });
-        }
-        catch (PostgresException ex) when (ex.SqlState == "23505") // unique constraint violation
-        {
-            return Conflict(new { Message = "This game is already reserved for the selected date." });
-        }
     }
 
     /// <summary>
