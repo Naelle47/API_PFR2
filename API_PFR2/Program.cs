@@ -1,16 +1,14 @@
 using System.Text;
 using API_PFR2.BLL;
 using API_PFR2.DAL;
-using API_PFR2.Domain.Enums;
 using API_PFR2.Presentation.API_REST.Filters;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
-using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
 
 // ---------------------------
 // Configuration files
@@ -18,24 +16,22 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration
     .AddJsonFile("appsettings.secrets.json", optional: true, reloadOnChange: true);
 
-
 // ---------------------------
 // Controllers
 // ---------------------------
 builder.Services.AddControllers(options =>
 {
-//#if !DEBUG
-//    options.Filters.Add(typeof(APIExceptionFilterAttribute));
-//#endif
+    options.Filters.Add(typeof(APIExceptionFilterAttribute));
+    options.Filters.Add(typeof(FluentValidationFilter));
 });
-
+builder.Services.AddScoped<FluentValidationFilter>();
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 // ----------------------------------------
 // DAL & BLL -- IOC & Dependency Injection
 // ----------------------------------------
 builder.Services.AddDAL(builder.Configuration);
 builder.Services.AddBLL();
-
 
 // ---------------------------
 // JWT Authentication
@@ -48,25 +44,20 @@ builder.Services
         {
             ValidateIssuer = true,
             ValidateAudience = true,
-
             ValidIssuer = builder.Configuration["JWTIssuer"],
             ValidAudience = builder.Configuration["JWTAudience"],
-
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(builder.Configuration["JWTSecret"]!)
             ),
-
             ClockSkew = TimeSpan.Zero
         };
     });
-
 
 // ---------------------------
 // Swagger / OpenAPI
 // ---------------------------
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
@@ -108,12 +99,10 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-
 // ---------------------------
 // Build app
 // ---------------------------
 var app = builder.Build();
-
 
 // ---------------------------
 // Middleware pipeline
@@ -126,12 +115,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
 
 // ------------------------------
 // Integration Tests entry point
 // ------------------------------
- public partial class Program { }
+public partial class Program { }
