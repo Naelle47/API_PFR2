@@ -24,9 +24,9 @@ builder.Configuration
 // ---------------------------
 builder.Services.AddControllers(options =>
 {
-#if !DEBUG
-    options.Filters.Add(typeof(APIExceptionFilterAttribute));
-#endif
+//#if !DEBUG
+//    options.Filters.Add(typeof(APIExceptionFilterAttribute));
+//#endif
 });
 
 

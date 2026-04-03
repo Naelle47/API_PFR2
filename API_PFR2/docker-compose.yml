@@ -2,12 +2,43 @@ version: '3.8'
 
 services:
   api_pfr2:
-    # build:
-    #   context: ./API_PFR2
-    #   dockerfile: Dockerfile
-    image: ghcr.io/naelle47/api_pfr2:master
+    build:
+      context: ..
+      dockerfile: API_PFR2/Dockerfile
+    # image: ghcr.io/naelle47/api_pfr2:master
     # image : ghcr.io/naelle47/api_pfr2:latest
     ports:
-      - "32768:8080"
+      - "5000:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings:DefaultConnection=Host=db;Database=API_PFR2;Username=postgres;Password=password;Port=5432 
+      - JWTSecret=NivoBoardGameBarSuperSecretKeyForJwtToken123456
+      - JWTIssuer=http://localhost:5000
+      - JWTAudience=http://localhost:5000
+      - JWTExpireTokenInSeconds=3600
+      - Email:SmtpServer=smtp.gmail.com
+      - Email:SmtpPort=587
+      - Email:SenderEmail=noreply@nivo.com
+      - Email:SenderPassword=votre_mot_de_passe
+    networks:
+      - pfr2-net
+
+
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: API_PFR2
+    volumes:
+      - pfr2-data:/var/lib/postgresql
+      - ./initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - "5555:5432"
+    networks:
+      - pfr2-net
+volumes:
+  pfr2-data:
+networks:
+  pfr2-net:
