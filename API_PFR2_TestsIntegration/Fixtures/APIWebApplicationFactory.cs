@@ -1,67 +1,62 @@
 ﻿using System.Data;
-using System.Text.RegularExpressions;
 using API_PFR2.Domain.Enums;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
-namespace API_PFR2_TestsIntegration.Fixtures;
 
-public class APIWebApplicationFactory : WebApplicationFactory<Program>
+public class APIWebApplicationFactory
+    : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private const string TestConnectionString =
         "Host=localhost;Database=api_pfr2_test;Username=postgres;Password=password;Port=5432";
 
     public IConfiguration? Configuration { get; set; }
 
-    public APIWebApplicationFactory() : base()
+    public async Task InitializeAsync()
     {
-        using var connection = new NpgsqlConnection(TestConnectionString);
-        connection.Open();
+        var basePath = AppContext.BaseDirectory;
 
-        // 1. Cleanup
-        var cleanupSql = File.ReadAllText(
-            Path.Combine(Directory.GetCurrentDirectory(), "Data", "cleanup.sql"));
-        using (var cleanupCommand = new NpgsqlCommand(cleanupSql, connection))
+        await ExecuteSqlFile(Path.Combine(basePath, "Data", "cleanup.sql"));
+        await ExecuteSqlFile(Path.Combine(basePath, "Data", "seed.sql"));
+    }
+
+    public Task DisposeAsync() => Task.CompletedTask;
+
+    private async Task ExecuteSqlFile(string path)
+    {
+        var sql = await File.ReadAllTextAsync(path);
+
+        await using var conn = new NpgsqlConnection(TestConnectionString);
+        await conn.OpenAsync();
+
+        var commands = sql.Split(';', StringSplitOptions.RemoveEmptyEntries);
+
+        foreach (var cmdText in commands)
         {
-            cleanupCommand.ExecuteNonQuery();
+            var trimmed = cmdText.Trim();
+            if (string.IsNullOrWhiteSpace(trimmed)) continue;
+
+            await using var cmd = new NpgsqlCommand(trimmed, conn);
+            await cmd.ExecuteNonQueryAsync();
         }
-
-        // 2. Seed
-        var sql = File.ReadAllText(
-            Path.Combine(Directory.GetCurrentDirectory(), "Data", "seed.sql"));
-        using var command = new NpgsqlCommand(sql, connection);
-        command.ExecuteNonQuery();
-
-        //var sql = File.ReadAllText(
-        //    Path.Combine(Directory.GetCurrentDirectory(), "Data", "seed.sql"));
-        //var commands = Regex.Split(sql, @";\s*(\r?\n|$)", RegexOptions.Multiline);
-        //foreach (var commandText in commands)
-        //{
-        //    var trimmed = commandText.Trim();
-        //    if (string.IsNullOrWhiteSpace(trimmed))
-        //        continue;
-        //    using var command = new NpgsqlCommand(trimmed, connection);
-        //    command.ExecuteNonQuery();
-        //}
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        base.ConfigureWebHost(builder);
+        builder.UseEnvironment("Integration");
 
         builder.ConfigureAppConfiguration((context, config) =>
         {
             Configuration = new ConfigurationBuilder()
-                .AddJsonFile(
-                    Path.Combine(Directory.GetCurrentDirectory(), "appsettings.Integrations.json"))
+                .AddJsonFile(Path.Combine(AppContext.BaseDirectory, "appsettings.Integrations.json"))
                 .Build();
+
             config.AddConfiguration(Configuration);
         });
 
         builder.ConfigureServices(services =>
         {
-            // Remplacer NpgsqlDataSource par celle de la base de test
             var dataSourceDescriptor = services.SingleOrDefault(
                 d => d.ServiceType == typeof(NpgsqlDataSource));
             if (dataSourceDescriptor != null)
@@ -75,21 +70,11 @@ public class APIWebApplicationFactory : WebApplicationFactory<Program>
             var dataSourceBuilder = new NpgsqlDataSourceBuilder(TestConnectionString);
             dataSourceBuilder.MapEnum<RoleUtilisateur>("role_utilisateur");
             dataSourceBuilder.MapEnum<StatutInscription>("statut_inscription");
+
             var dataSource = dataSourceBuilder.Build();
 
             services.AddSingleton(dataSource);
             services.AddScoped<IDbConnection>(sp => dataSource.CreateConnection());
         });
-    }
-
-    protected override void Dispose(bool disposing)
-    {
-        using var connection = new NpgsqlConnection(TestConnectionString);
-        connection.Open();
-        var sql = File.ReadAllText(
-            Path.Combine(Directory.GetCurrentDirectory(), "Data", "cleanup.sql"));
-        using var command = new NpgsqlCommand(sql, connection);
-        command.ExecuteNonQuery();
-        base.Dispose(disposing);
     }
 }
