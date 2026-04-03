@@ -23,8 +23,6 @@ services:
     networks:
       - pfr2-net
 
-
-
   db:
     image: postgres:latest
     environment:
