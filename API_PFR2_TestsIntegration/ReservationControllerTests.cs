@@ -68,15 +68,28 @@ namespace API_PFR2_TestsIntegration
         {
             await AuthenticateAsync();
 
-            var jeuId = 1;
-            var date = DateTime.UtcNow.Date.AddDays(1); // date du seed pour Catan
+            // Crée une réservation pour garantir qu'il y a des données
+            var start = DateTime.UtcNow.Date.AddDays(1).AddHours(10);
+            var createRequest = new CreateReservationRequest
+            {
+                UtilisateurId = 1,
+                JeuId = 1,
+                DateDebut = start,
+                DateFin = start.AddHours(2)
+            };
+            var createResponse = await _client.PostAsJsonAsync("/api/reservation", createRequest);
+            createResponse.EnsureSuccessStatusCode();
 
+            var jeuId = 1;
+            var date = start.Date;
+
+            // Récupère les réservations
             var response = await _client.GetAsync($"/api/reservation?jeuId={jeuId}&date={date:yyyy-MM-dd}");
             response.EnsureSuccessStatusCode();
 
             var reservations = await response.Content.ReadFromJsonAsync<ReservationResponse[]>();
             Assert.NotNull(reservations);
-            Assert.NotEmpty(reservations); // au moins la réservation seed
+            Assert.NotEmpty(reservations); // au moins la réservation qu'on vient de créer
             Assert.All(reservations, r => Assert.Equal(jeuId, r.JeuId));
         }
 
